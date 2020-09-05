@@ -2,6 +2,7 @@
 using Editor._history;
 using Editor._jqa;
 using Editor._tabs;
+using Editor._ui;
 using Logging;
 using UnityEditor;
 using UnityEngine;
@@ -18,6 +19,7 @@ namespace Editor
         private JqaExecutor _jqaExecutor;
         private InstallTab _installTab;
         private ScanAndReportTab _scanAndReportTab;
+        private RuleSelector _ruleSelector;
         private int _selectedTab;
         private GUIStyle _navigationButtonStyle;
 
@@ -36,13 +38,7 @@ namespace Editor
             _selectedTab = GUILayout.SelectionGrid(_selectedTab,
                 new[] {"Install & Uninstall", "Scan & Report", "Tutorial"}, 1, _navigationButtonStyle);
 
-            EditorGUI.DrawRect(
-                new Rect(
-                    200,
-                    0,
-                    1,
-                    position.height
-                ), new Color(15 / 255f, 25 / 255f, 37 / 255f));
+            CqaLine.DrawNavigationLine(position.height);
 
             EditorGUILayout.BeginVertical();
             switch (_selectedTab)
@@ -73,14 +69,19 @@ namespace Editor
                 _historyManager = new HistoryManager();
             }
 
+            if (_ruleSelector == null)
+            {
+                _ruleSelector = new RuleSelector();
+            }
+
             if (_jqaExecutor == null)
             {
-                _jqaExecutor = new JqaExecutor(jqaPaths, _historyManager);
+                _jqaExecutor = new JqaExecutor(jqaPaths, _historyManager, _ruleSelector);
             }
 
             if (_scanAndReportTab == null)
             {
-                _scanAndReportTab = new ScanAndReportTab(_jqaManager, _jqaExecutor, _historyManager, jqaPaths);
+                _scanAndReportTab = new ScanAndReportTab(_jqaManager, _jqaExecutor, _historyManager, jqaPaths, _ruleSelector);
             }
 
             if (_installTab == null)

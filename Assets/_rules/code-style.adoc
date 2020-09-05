@@ -6,49 +6,41 @@
 
 === Constraints
 
-[[code-style:MaximumOneMethod]]
-.The project does not contain more than one method.
-[source,cypher,role=constraint,rowCountMin=1]
+[[code-style:MaximumLOCPerClass]]
+.No class has more than 300 lines of code.
+[source,cypher,role=constraint,rowCountMax=0]
+----
+MATCH
+  (c:Class)
+WHERE
+  c.effectiveLineCount >= 300
+RETURN
+  c.fqn as FQN, c.effectiveLineCount as `Lines of Code`
+ORDER BY
+  c.effectiveLineCount DESC
+----
+
+[[code-style:MaximumComplexityPerMethod]]
+.No method has a higher cyclomatic complexity than 10.
+[source,cypher,role=constraint,rowCountMax=0]
 ----
 MATCH
   (m:Method)
+WHERE
+  m.cyclomaticComplexity > 10
 RETURN
-  m.fqn
+  m.fqn as FQN, m.cyclomaticComplexity as `Cyclomatic Complexity`
+ORDER BY
+  m.cyclomaticComplexity DESC
 ----
 
-=== Concepts
 
-[[code-style:Test]]
-.Test description.
-[source,cypher,role=concept]
+[[code-style:MethodInvocations]]
+.Method invocations.
+[source,cypher,role=concept,reportType="plantuml-component-diagram"]
 ----
 MATCH
-  (m:Method)
+  (m:Method)-[i:INVOKES]->(m2:Method)
 RETURN
-  m.fqn as FQN
-LIMIT
-  10
+  m, i, m2
 ----
-
-
-// === Concepts
-
-// [[code-style:Methods]]
-// .Complex methods.
-// [source,cypher,role=concept]
-// ----
-// MATCH
-//   (m:Method)-[i:INVOKES]->()
-// RETURN
-//   m as Method, i as Invokes
-// ----
-// ----
-// MATCH
-//   (method:Method)
-// RETURN
-//   method.fqn, method.cyclomaticComplexity AS CC, method.effectiveLineCount AS LoC
-// ORDER BY
-//   LoC DESC, CC DESC
-// LIMIT
-//   10
-// ----

@@ -6,7 +6,6 @@ using System.Reflection;
 using Editor._common;
 using Editor._model;
 using Logging;
-using UnityEngine;
 
 namespace Editor
 {
@@ -17,8 +16,7 @@ namespace Editor
 
         public Dictionary<Group, List<Rule>> DetectRules()
         {
-            List<FileInfo> fileInfoList =
-                TryToFindRulesIn(new DirectoryInfo(Path.Combine(Application.dataPath, "_rules")));
+            List<FileInfo> fileInfoList = FileReader.FindAsciidocFiles();
 
             if (fileInfoList.Count == 0)
             {
@@ -31,13 +29,13 @@ namespace Editor
             {
                 string text = FileReader.TryToReadFile(fileInfo);
 
-                IEnumerable<int> ruleOrGroupIndexes = IndexOfAll(text, "[[");
+                List<int> ruleOrGroupIndexes = IndexOfAll(text, "[[").ToList();
 
                 Group currentGroup = null;
 
-                foreach (int index in ruleOrGroupIndexes)
+                for (int i = 0; i < ruleOrGroupIndexes.Count; i++)
                 {
-                    int declarationStartIndex = index + 2;
+                    int declarationStartIndex = ruleOrGroupIndexes[i] + 2;
                     int declarationEndIndex = text.IndexOf("]]", declarationStartIndex, StringComparison.Ordinal);
                     int declarationLength = declarationEndIndex - declarationStartIndex;
 
@@ -57,12 +55,19 @@ namespace Editor
                             descriptionLength
                         );
 
+                    int nextIndex = i < ruleOrGroupIndexes.Count - 1 ? ruleOrGroupIndexes[i + 1] : text.Length - 1;
+
+                    bool isConstraint = text
+                        .Substring(declarationStartIndex, nextIndex - declarationStartIndex)
+                        .Contains("role=concept");
+
                     if (declaration.Contains(":"))
                     {
                         result[currentGroup].Add(new Rule
                         {
                             Name = declaration,
-                            Description = description
+                            Description = description,
+                            IsConstraint = isConstraint
                         });
                     }
                     else
@@ -80,27 +85,6 @@ namespace Editor
 
             return result;
         }
-
-
-        private static List<FileInfo> TryToFindRulesIn(DirectoryInfo directoryInfo)
-        {
-            List<FileInfo> fileInfos = new List<FileInfo>();
-            try
-            {
-                fileInfos = directoryInfo.GetFiles("*.adoc").ToList();
-            }
-            catch (UnauthorizedAccessException e)
-            {
-                Log.Error(e.Message);
-            }
-            catch (DirectoryNotFoundException e)
-            {
-                Log.Error(e.Message);
-            }
-
-            return fileInfos;
-        }
-
 
         private static IEnumerable<int> IndexOfAll(string source, string subString)
         {

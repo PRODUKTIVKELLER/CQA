@@ -12,7 +12,7 @@ namespace Editor._jqa
         private const string VersionFolderName = "0.0.1";
 
 
-        private string BuildAppDataPath()
+        private static string BuildAppDataPath()
         {
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             return Path.Combine(
@@ -33,14 +33,19 @@ namespace Editor._jqa
             return Path.Combine(BuildJqaInstallationPath(), "jqassistant-commandline-neo4jv3-1.8.0");
         }
 
-        public string BuildJqaDataPath()
+        public static string BuildJqaDataPath()
         {
             return Path.Combine(BuildAppDataPath(), "data", Application.productName);
         }
 
         public string BuildJqaStorePath()
         {
-            return Path.Combine(BuildAppDataPath(), "data", Application.productName, "store");
+            return Path.Combine(BuildJqaDataPath(), "store");
+        }
+        
+        public string BuildJqaReportPath()
+        {
+            return Path.Combine(BuildJqaDataPath(), "report");
         }
         
         public string BuildCqaHistoryPath()
@@ -48,14 +53,14 @@ namespace Editor._jqa
             return Path.Combine(BuildJqaStorePath(), "cqa.json");
         }
 
-        public string BuildJqaReportPath()
-        {
-            return Path.Combine(BuildAppDataPath(), "data", Application.productName, "report");
-        }
-
         public string BuildJqaHtmlReportPath()
         {
             return Path.Combine(BuildJqaReportPath(), "asciidoc", "index.html");
+        }
+        
+        public static string BuildJqaHtmlFinishedTemplatesPath()
+        {
+            return Path.Combine(BuildJqaDataPath(), "finished-templates");
         }
 
         public string BuildJqaExecutablePath()

@@ -1,6 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using Logging;
+using UnityEngine;
 
 namespace Editor._common
 {
@@ -8,6 +12,32 @@ namespace Editor._common
     {
         private static readonly ILog Log =
             LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        public static List<FileInfo> FindAsciidocFiles()
+        {
+            DirectoryInfo directoryInfo = new DirectoryInfo(Path.Combine(Application.dataPath, "_rules"));
+            List<FileInfo> fileInfos = new List<FileInfo>();
+            try
+            {
+                fileInfos = directoryInfo.GetFiles("*.adoc").ToList();
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                Log.Error(e.Message);
+            }
+            catch (DirectoryNotFoundException e)
+            {
+                Log.Error(e.Message);
+            }
+
+            return fileInfos;
+        }
+
+        public static string ReadIndexAsciidoc()
+        {
+            FileInfo fileInfo = new FileInfo(Path.Combine(Application.dataPath, "_rules", "index.adoc"));
+            return TryToReadFile(fileInfo);
+        }
 
         public static string TryToReadFile(FileInfo fileInfo)
         {
