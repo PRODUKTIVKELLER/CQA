@@ -42,10 +42,20 @@ namespace Editor._jqa
         {
             return Path.Combine(BuildAppDataPath(), "data", Application.productName, "store");
         }
+        
+        public string BuildCqaHistoryPath()
+        {
+            return Path.Combine(BuildJqaStorePath(), "cqa.json");
+        }
 
         public string BuildJqaReportPath()
         {
             return Path.Combine(BuildAppDataPath(), "data", Application.productName, "report");
+        }
+
+        public string BuildJqaHtmlReportPath()
+        {
+            return Path.Combine(BuildJqaReportPath(), "asciidoc", "index.html");
         }
 
         public string BuildJqaExecutablePath()

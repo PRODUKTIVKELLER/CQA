@@ -17,30 +17,27 @@ namespace Editor._tabs
 
         public void OnGUI()
         {
-            string status = "";
+            CqaLabel.Heading1("Install & Uninstall");
 
             if (_jqaManager.CheckIfJqaIsInstalling())
             {
-                status = "Installing ...";
+                CqaLabel.Bold("Status: Installing ...");
             }
             else if (_jqaManager.CheckIfJqaIsInstalled())
             {
-                status = "Installed";
+                CqaLabel.Success("Status: Installed");
             }
             else
             {
-                status = "Not Installed";
+                CqaLabel.Error("Status: Not Installed");
             }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Status: " + status, EditorStyles.boldLabel);
-            EditorGUILayout.Space();
 
             if (!_jqaManager.CheckIfJqaIsInstalled())
             {
                 GUILayout.Label("CQA is not installed yet.");
                 GUILayout.Label("To install it we need to download files from jqassistant.org and github.com.");
                 GUILayout.Label("If you agree click the button below.");
+
                 EditorGUILayout.Space();
 
                 if (CqaButton.NormalButton("Install"))
@@ -72,6 +69,7 @@ namespace Editor._tabs
                 return;
             }
 
+            EditorGUILayout.Space();
             if (CqaButton.NormalButton("Uninstall"))
             {
                 _jqaManager.UninstallJqa();

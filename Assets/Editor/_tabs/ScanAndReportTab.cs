@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Editor._history;
 using Editor._jqa;
 using Editor._model;
 using Editor._ui;
@@ -13,17 +15,21 @@ namespace Editor._tabs
     {
         private readonly JqaManager _jqaManager;
         private readonly JqaExecutor _jqaExecutor;
+        private readonly JqaPaths _jqaPaths;
+        private readonly HistoryManager _historyManager;
 
         private readonly Dictionary<Group, List<Rule>> _rulesByGroup;
         private readonly Dictionary<Rule, bool> _ruleCheckboxes;
         private readonly Dictionary<Group, bool> _groupCheckboxes;
         private readonly Dictionary<Group, bool> _groupFoldout;
 
-
-        public ScanAndReportTab(JqaManager jqaManager, JqaExecutor jqaExecutor)
+        public ScanAndReportTab(JqaManager jqaManager, JqaExecutor jqaExecutor, HistoryManager historyManager,
+            JqaPaths jqaPaths)
         {
             _jqaManager = jqaManager;
             _jqaExecutor = jqaExecutor;
+            _historyManager = historyManager;
+            _jqaPaths = jqaPaths;
 
             _rulesByGroup = new RuleDetector().DetectRules();
             _ruleCheckboxes = new Dictionary<Rule, bool>();
@@ -44,40 +50,87 @@ namespace Editor._tabs
 
         public void OnGUI()
         {
+            CqaLabel.Heading1("Scan");
+
             if (!_jqaManager.CheckIfJqaIsInstalled())
             {
-                EditorGUILayout.Space();
-                EditorGUILayout.LabelField("CQA is currently not installed.");
-                EditorGUILayout.Space();
+                CqaLabel.Error("CQA is currently not installed.");
                 return;
             }
 
-            if (!_jqaExecutor.IsProcessRunning())
+            CqaLabel.Normal("CQA scans all scripts inside your Assets folder.");
+
+            History history = _historyManager.LoadHistory();
+
+            if (history != null)
             {
-                if (CqaButton.NormalButton("Scan Assets"))
-                {
-                    _jqaExecutor.ScanAssets();
-                }
+                CqaLabel.Normal("The last scan was at " + history.GetLastScan() + ".");
             }
 
-            if (_jqaExecutor.IsProcessRunning())
+            EditorGUI.BeginDisabledGroup(_jqaExecutor.IsAnyProcessRunning());
+            if (CqaButton.NormalButton("Scan Assets"))
             {
+                _jqaExecutor.ScanAssets();
+            }
+            EditorGUI.EndDisabledGroup();
+
+            if (_jqaExecutor.IsScanProcessRunning())
+            {
+                CqaLabel.Bold("Status: Running ...");
+
                 if (CqaButton.NormalButton("Stop Process"))
                 {
                     _jqaExecutor.StopProcess();
                 }
             }
-            
-            ListRulesWithCheckboxes();
-            
-            if (!_jqaExecutor.IsProcessRunning())
+
+            GUILayout.Space(30);
+            DrawLine();
+
+            CqaLabel.Heading1("Report");
+
+            if (!_jqaExecutor.DidFinishSuccessfullyOnce())
             {
-                EditorGUILayout.Space();
-                if (CqaButton.NormalButton("Check & Report"))
+                CqaLabel.Error("You must scan your project before you can create a report.");
+                return;
+            }
+
+            CqaLabel.Normal("Select rules that you want to be checked in the report.");
+
+            if (_jqaExecutor.IsReportProcessRunning())
+            {
+                CqaLabel.Bold("Status: Running ...");
+
+                if (CqaButton.NormalButton("Stop Process"))
                 {
-                    _jqaExecutor.CheckAndReport();
+                    _jqaExecutor.StopProcess();
                 }
             }
+
+            ListRulesWithCheckboxes();
+            ShowReportButtons();
+        }
+
+        private void ShowReportButtons()
+        {
+            EditorGUI.BeginDisabledGroup(_jqaExecutor.IsAnyProcessRunning());
+            GUILayout.Space(15);
+
+            if (CqaButton.NormalButton("Create Report"))
+            {
+                _jqaExecutor.CheckAndReport();
+            }
+
+            FileInfo reportFileInfo = new FileInfo(_jqaPaths.BuildJqaHtmlReportPath());
+            EditorGUI.BeginDisabledGroup(!reportFileInfo.Exists);
+            if (CqaButton.NormalButton("Open Report in Browser"))
+            {
+                Application.OpenURL(reportFileInfo.FullName);
+            }
+
+            EditorGUI.EndDisabledGroup();
+
+            EditorGUI.EndDisabledGroup();
         }
 
         private void ListRulesWithCheckboxes()
@@ -135,6 +188,19 @@ namespace Editor._tabs
 
             _groupFoldout[group] = EditorGUILayout.Foldout(_groupFoldout[group], group.Description);
             EditorGUILayout.EndHorizontal();
+        }
+
+        private static void DrawLine()
+        {
+            const float padding = 0;
+            const float thickness = 1;
+
+            Rect r = EditorGUILayout.GetControlRect(GUILayout.Height(padding + thickness));
+            r.height = thickness;
+            r.y += padding / 2f;
+            r.x -= 22;
+            r.width += 26;
+            EditorGUI.DrawRect(r, Color.grey);
         }
     }
 }

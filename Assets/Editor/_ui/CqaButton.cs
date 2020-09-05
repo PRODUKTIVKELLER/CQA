@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 
 namespace Editor._ui
 {
@@ -6,7 +7,11 @@ namespace Editor._ui
     {
         internal static bool NormalButton(string text)
         {
-            return GUILayout.Button(text, GUILayout.Width(150));
+            GUILayout.Space(5);
+            bool pressed = GUILayout.Button(text, GUILayout.Width(150));
+            GUILayout.Space(0);
+            return pressed;
         }
+        
     }
 }

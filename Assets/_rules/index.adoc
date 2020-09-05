@@ -14,18 +14,86 @@ include::jQA:Rules[concepts="code-style:*",constraints="code-style:*"]
 .Common
 [role=group,includesConstraints="common:*",includesConcepts="common:*"]
 
-== Common
+== Overview
 
-=== Constraints
+[[common:Overview]]
+.How much did we scan?
+[source,cypher,role=concept,rowCountMin=1]
+----
+MATCH 
+  (m:Method)
+WITH 
+  count(m) as count
+RETURN 
+  'Methods' as Label, count AS `Count`
+UNION ALL
 
-[[common:MaximumOneMethod]]
-.The project does not contain more than one method.
-[source,cypher,role=constraint,rowCountMin=1]
+MATCH 
+  (c:Class)
+WITH 
+  count(c) as count
+RETURN 
+  'Classes' as Label, count AS `Count`
+UNION ALL
+
+MATCH 
+  (e:Enum)
+WITH 
+  count(e) as count
+RETURN 
+  'Enums' as Label, count AS `Count`
+UNION ALL
+
+MATCH 
+  (i:Interface)
+WITH 
+  count(i) as count
+RETURN 
+  'Interfaces' as Label, count AS `Count`
+----
+
+
+[[common:Metrics]]
+.Here are a few general metrics.
+[source,cypher,role=concept,rowCountMin=1]
 ----
 MATCH
   (m:Method)
 RETURN
-  m.fqn
+  'Highest Cyclomatic Complexity' as Label, COALESCE(m.cyclomaticComplexity, 0) AS Value, m.fqn AS FQN
+ORDER BY
+  Value DESC
+LIMIT 1
+UNION ALL
+
+MATCH
+  (c:Class)
+RETURN
+  'Lines of Code' as Label, SUM(c.effectiveLineCount) AS Value, "-" AS FQN
+UNION ALL
+
+MATCH
+  (c:Class)-[:DECLARES]->(m:Method)
+WITH
+  COUNT(m) AS methodCount, c.fqn AS FQN 
+RETURN 
+  'Highest Method Count' as Label, MAX(methodCount) AS Value, FQN AS FQN
+ORDER BY
+  Value DESC
+LIMIT 1
+UNION ALL
+
+MATCH 
+  (c:Class)-[:DECLARES]->(m:Method)<-[i:INVOKES]-(m2:Method)<-[:DECLARES]-(other:Class)
+WHERE
+  c <> other
+WITH
+  COUNT(i) AS invocationCount, m.fqn AS FQN 
+RETURN 
+  'Most Called Method (from outside class)' as Label, MAX(invocationCount) AS Value, FQN AS FQN
+ORDER BY
+  Value DESC
+LIMIT 1
 ----
 
 

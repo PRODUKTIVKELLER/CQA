@@ -2,7 +2,7 @@
 .Code Style
 [role=group,includesConstraints="code-style:*",includesConcepts="code-style:*"]
 
-== Code-Style
+== Code Style
 
 === Constraints
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Editor._common;
 using Editor._model;
 using Logging;
 using UnityEngine;
@@ -28,7 +29,7 @@ namespace Editor
 
             foreach (FileInfo fileInfo in fileInfoList)
             {
-                string text = TryToReadFile(fileInfo);
+                string text = FileReader.TryToReadFile(fileInfo);
 
                 IEnumerable<int> ruleOrGroupIndexes = IndexOfAll(text, "[[");
 
@@ -98,25 +99,6 @@ namespace Editor
             }
 
             return fileInfos;
-        }
-
-        private static string TryToReadFile(FileInfo fileInfo)
-        {
-            StreamReader reader = new StreamReader(fileInfo.FullName);
-            try
-            {
-                return reader.ReadToEnd();
-            }
-            catch (IOException e)
-            {
-                Log.Error("The file '{}' could not be read:\n\n{}", fileInfo.FullName, e.Message);
-            }
-            finally
-            {
-                reader.Close();
-            }
-
-            return "";
         }
 
 
