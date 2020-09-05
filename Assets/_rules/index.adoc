@@ -11,6 +11,7 @@ include::jQA:Summary[]
 include::jQA:Rules[concepts="code-style:*",constraints="code-style:*"]
 
 [[common]]
+.Common
 [role=group,includesConstraints="common:*",includesConcepts="common:*"]
 
 == Common
