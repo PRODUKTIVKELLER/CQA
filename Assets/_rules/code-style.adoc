@@ -1,0 +1,53 @@
+[[code-style]]
+[role=group,includesConstraints="code-style:*",includesConcepts="code-style:*"]
+
+== Code-Style
+
+=== Constraints
+
+[[code-style:MaximumOneMethod]]
+.The project does not contain more than one method.
+[source,cypher,role=constraint,rowCountMin=1]
+----
+MATCH
+  (m:Method)
+RETURN
+  m.fqn
+----
+
+=== Concepts
+
+[[code-style:Test]]
+.Test description.
+[source,cypher,role=concept]
+----
+MATCH
+  (m:Method)
+RETURN
+  m.fqn as FQN
+LIMIT
+  10
+----
+
+
+// === Concepts
+
+// [[code-style:Methods]]
+// .Complex methods.
+// [source,cypher,role=concept]
+// ----
+// MATCH
+//   (m:Method)-[i:INVOKES]->()
+// RETURN
+//   m as Method, i as Invokes
+// ----
+// ----
+// MATCH
+//   (method:Method)
+// RETURN
+//   method.fqn, method.cyclomaticComplexity AS CC, method.effectiveLineCount AS LoC
+// ORDER BY
+//   LoC DESC, CC DESC
+// LIMIT
+//   10
+// ----

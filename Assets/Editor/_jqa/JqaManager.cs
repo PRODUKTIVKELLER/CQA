@@ -2,9 +2,10 @@
 using System.IO.Compression;
 using System.Net;
 using System.Reflection;
+using System.Threading;
 using Logging;
 
-namespace Editor
+namespace Editor._jqa
 {
     public class JqaManager
     {
@@ -21,6 +22,7 @@ namespace Editor
             JqaCsharpPluginFileName;
 
         private readonly JqaPaths _jqaPaths;
+        private Thread _installThread;
 
         public JqaManager(JqaPaths jqaPaths)
         {
@@ -32,15 +34,35 @@ namespace Editor
             return Directory.Exists(_jqaPaths.BuildJqaInstallationPath());
         }
 
+        public bool CheckIfJqaIsInstalling()
+        {
+            return _installThread != null && _installThread.IsAlive;
+        }
+
         public void InstallJqa()
         {
-            Log.Debug("Creating installation directory for jQA under {} ...", _jqaPaths.BuildJqaInstallationPath());
-            Directory.CreateDirectory(_jqaPaths.BuildJqaInstallationPath());
+            InstallJqaAsync();
+        }
 
-            DownloadJqa();
-            DownloadCSharpPlugin();
+        private void InstallJqaAsync()
+        {
+            _installThread = new Thread(
+                () =>
+                {
+                    Thread.CurrentThread.IsBackground = true;
 
-            Log.Debug("Finished installing CQA.");
+                    Log.Debug("Creating installation directory for jQA under {} ...",
+                        _jqaPaths.BuildJqaInstallationPath());
+                    Directory.CreateDirectory(_jqaPaths.BuildJqaInstallationPath());
+
+                    DownloadJqa();
+                    DownloadCSharpPlugin();
+
+                    Log.Debug("Finished installing CQA.");
+                }
+            );
+
+            _installThread.Start();
         }
 
         private void DownloadCSharpPlugin()
@@ -91,6 +113,11 @@ namespace Editor
         {
             Directory.Delete(_jqaPaths.BuildJqaInstallationPath(), true);
             Log.Debug("Successfully uninstalled CQA.");
+        }
+
+        public void AbortInstallation()
+        {
+            _installThread.Abort();
         }
     }
 }

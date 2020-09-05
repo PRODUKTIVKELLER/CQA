@@ -1,0 +1,31 @@
+:toc: left
+= {{PROJECT}}
+
+{{DESCRIPTION}}
+
+== Summary
+
+include::jQA:Summary[]
+
+
+include::jQA:Rules[concepts="code-style:*",constraints="code-style:*"]
+
+[[common]]
+[role=group,includesConstraints="common:*",includesConcepts="common:*"]
+
+== Common
+
+=== Constraints
+
+[[common:MaximumOneMethod]]
+.The project does not contain more than one method.
+[source,cypher,role=constraint,rowCountMin=1]
+----
+MATCH
+  (m:Method)
+RETURN
+  m.fqn
+----
+
+
+include::code-style.adoc[]

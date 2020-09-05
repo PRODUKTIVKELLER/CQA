@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace Editor
+namespace Editor._jqa
 {
     public class JqaPaths
     {
@@ -36,6 +36,16 @@ namespace Editor
         public string BuildJqaDataPath()
         {
             return Path.Combine(BuildAppDataPath(), "data", Application.productName);
+        }
+
+        public string BuildJqaStorePath()
+        {
+            return Path.Combine(BuildAppDataPath(), "data", Application.productName, "store");
+        }
+
+        public string BuildJqaReportPath()
+        {
+            return Path.Combine(BuildAppDataPath(), "data", Application.productName, "report");
         }
 
         public string BuildJqaExecutablePath()
