@@ -16,7 +16,7 @@ namespace Editor._tabs
 
         internal RuleSelector()
         {
-            RulesByGroup = new RuleDetector().DetectRules();
+            RulesByGroup = RuleDetector.DetectBuiltInRules();
             RuleCheckboxes = new Dictionary<Rule, bool>();
             GroupCheckboxes = new Dictionary<Group, bool>();
             _groupFoldout = new Dictionary<Group, bool>();

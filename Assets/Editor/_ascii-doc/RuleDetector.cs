@@ -2,22 +2,46 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using Editor._common;
+using Editor._jqa;
 using Editor._model;
-using Logging;
 
 namespace Editor
 {
-    public class RuleDetector
+    public abstract class RuleDetector
     {
-        private static readonly ILog Log =
-            LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        public Dictionary<Group, List<Rule>> DetectRules()
+        public static Dictionary<Group, List<Rule>> DetectBuiltInRules()
         {
-            List<FileInfo> fileInfoList = FileReader.FindAsciidocFiles();
+            List<FileInfo> fileInfoList = FileReader.FindBuiltInAsciidocFiles();
+            return DetectRules(fileInfoList);
+        }
 
+        public static Dictionary<Group, List<Rule>> DetectLocalRules()
+        {
+            string path = JqaPaths.BuildLocalRulesPath();
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            
+            List<FileInfo> fileInfoList = FileReader.FindAsciidocFiles(path);
+            return DetectRules(fileInfoList);
+        }
+
+        public static Dictionary<Group, List<Rule>> DetectGlobalRules()
+        {
+            string path = JqaPaths.BuildGlobalRulesPath();
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            
+            List<FileInfo> fileInfoList = FileReader.FindAsciidocFiles(path);
+            return DetectRules(fileInfoList);
+        }
+
+        public static Dictionary<Group, List<Rule>> DetectRules(List<FileInfo> fileInfoList)
+        {
             if (fileInfoList.Count == 0)
             {
                 return new Dictionary<Group, List<Rule>>();

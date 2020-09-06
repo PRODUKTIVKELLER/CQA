@@ -174,7 +174,7 @@ namespace Editor
 
         private void ReadTemplateFiles()
         {
-            _fileInfoList = FileReader.FindAsciidocFiles();
+            _fileInfoList = FileReader.FindBuiltInAsciidocFiles();
         }
 
         private void RecreateOutputFolder()

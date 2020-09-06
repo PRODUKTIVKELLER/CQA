@@ -13,9 +13,14 @@ namespace Editor._common
         private static readonly ILog Log =
             LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static List<FileInfo> FindAsciidocFiles()
+        public static List<FileInfo> FindBuiltInAsciidocFiles()
         {
-            DirectoryInfo directoryInfo = new DirectoryInfo(Path.Combine(Application.dataPath, "_rules"));
+            return FindAsciidocFiles(Path.Combine(Application.dataPath, "_rules"));
+        }
+        
+        public static List<FileInfo> FindAsciidocFiles(string path)
+        {
+            DirectoryInfo directoryInfo = new DirectoryInfo(path);
             List<FileInfo> fileInfos = new List<FileInfo>();
             try
             {

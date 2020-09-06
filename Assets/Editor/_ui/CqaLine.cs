@@ -28,5 +28,16 @@ namespace Editor._ui
                     height
                 ), new Color(15 / 255f, 25 / 255f, 37 / 255f));
         }
+
+        public static void DrawVerticalLine(float height, float x)
+        {
+            EditorGUI.DrawRect(
+                new Rect(
+                    x,
+                    0,
+                    1, 
+                    height
+                ), new Color(15 / 255f, 25 / 255f, 37 / 255f));
+        }
     }
 }

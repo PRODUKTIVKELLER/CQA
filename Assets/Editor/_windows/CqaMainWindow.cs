@@ -19,6 +19,7 @@ namespace Editor
         private JqaExecutor _jqaExecutor;
         private InstallTab _installTab;
         private ScanAndReportTab _scanAndReportTab;
+        private ManageCustomRulesTab _manageCustomRulesTab;
         private RuleSelector _ruleSelector;
         private int _selectedTab;
         private GUIStyle _navigationButtonStyle;
@@ -36,7 +37,7 @@ namespace Editor
             EditorGUILayout.BeginHorizontal();
 
             _selectedTab = GUILayout.SelectionGrid(_selectedTab,
-                new[] {"Install & Uninstall", "Scan & Report", "Tutorial"}, 1, _navigationButtonStyle);
+                new[] {"Install & Uninstall", "Scan & Report", "Manage Custom Rules", "Tutorial"}, 1, _navigationButtonStyle);
 
             CqaLine.DrawNavigationLine(position.height);
 
@@ -48,6 +49,9 @@ namespace Editor
                     break;
                 case 1:
                     _scanAndReportTab.OnGUI();
+                    break;
+                case 2:
+                    _manageCustomRulesTab.OnGUI();
                     break;
             }
 
@@ -87,6 +91,11 @@ namespace Editor
             if (_installTab == null)
             {
                 _installTab = new InstallTab(_jqaManager);
+            }
+
+            if (_manageCustomRulesTab == null)
+            {
+                _manageCustomRulesTab = new ManageCustomRulesTab(_jqaManager);
             }
 
             if (_navigationButtonStyle == null)

@@ -62,6 +62,18 @@ namespace Editor._jqa
         {
             return Path.Combine(BuildJqaDataPath(), "finished-templates");
         }
+        
+        public static string BuildLocalRulesPath()
+        {
+            return Path.Combine(Application.dataPath, "CQA Rules");
+        }
+        
+        public static string BuildGlobalRulesPath()
+        {
+            return Path.Combine(BuildJqaDataPath(), "custom-rules");
+        }
+        
+        
 
         public string BuildJqaExecutablePath()
         {

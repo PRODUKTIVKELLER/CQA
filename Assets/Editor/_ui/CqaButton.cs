@@ -1,5 +1,4 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Editor._ui
 {
@@ -12,6 +11,11 @@ namespace Editor._ui
             GUILayout.Space(0);
             return pressed;
         }
-        
+
+        internal static bool EditButton()
+        {
+            bool pressed = GUILayout.Button(Resources.Load("pen") as Texture2D, ContextButtonStyleProvider.Provide());
+            return pressed;
+        }
     }
 }
