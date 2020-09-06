@@ -4,7 +4,7 @@ using System.Linq;
 using Editor._ui;
 using UnityEditor;
 
-namespace Editor
+namespace Editor._forms
 {
     public class EnumFormGroup<T> where T : struct, IConvertible
     {

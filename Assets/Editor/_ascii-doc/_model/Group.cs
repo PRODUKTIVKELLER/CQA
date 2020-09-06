@@ -1,8 +1,18 @@
-﻿namespace Editor._model
+﻿using System;
+using System.Collections.Generic;
+
+namespace Editor._model
 {
+    [Serializable]
     public class Group
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public string key;
+        public string name;
+        public List<Rule> rules;
+
+        public Group()
+        {
+            rules = new List<Rule>();
+        }
     }
 }

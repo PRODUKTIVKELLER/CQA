@@ -1,9 +1,13 @@
-﻿namespace Editor._model
+﻿using System;
+
+namespace Editor._model
 {
+    [Serializable]
     public class Rule
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public bool IsConstraint { get; set; }
+        public string key;
+        public string description;
+        public string cypherQuery;
+        public RuleType type;
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using Editor._common;
 using Editor._jqa;
 using Editor._model;
+using UnityEngine;
 
 namespace Editor
 {
@@ -16,28 +17,28 @@ namespace Editor
             return DetectRules(fileInfoList);
         }
 
-        public static Dictionary<Group, List<Rule>> DetectLocalRules()
+        public static List<Group> DetectLocalRules()
         {
-            string path = JqaPaths.BuildLocalRulesPath();
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            
-            List<FileInfo> fileInfoList = FileReader.FindAsciidocFiles(path);
-            return DetectRules(fileInfoList);
+            DirectoryInfo directoryInfo = new DirectoryInfo(JqaPaths.BuildLocalRulesPath());
+            return directoryInfo.EnumerateFiles("*.json").Select(
+                fileInfo =>
+                {
+                    string text = FileReader.TryToReadFile(fileInfo);
+                    return JsonUtility.FromJson<Group>(text);
+                }
+            ).ToList();
         }
 
-        public static Dictionary<Group, List<Rule>> DetectGlobalRules()
+        public static List<Group> DetectGlobalRules()
         {
-            string path = JqaPaths.BuildGlobalRulesPath();
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            
-            List<FileInfo> fileInfoList = FileReader.FindAsciidocFiles(path);
-            return DetectRules(fileInfoList);
+            DirectoryInfo directoryInfo = new DirectoryInfo(JqaPaths.BuildGlobalRulesPath());
+            return directoryInfo.EnumerateFiles("*.json").Select(
+                fileInfo =>
+                {
+                    string text = FileReader.TryToReadFile(fileInfo);
+                    return JsonUtility.FromJson<Group>(text);
+                }
+            ).ToList();
         }
 
         public static Dictionary<Group, List<Rule>> DetectRules(List<FileInfo> fileInfoList)
@@ -85,21 +86,23 @@ namespace Editor
                         .Substring(declarationStartIndex, nextIndex - declarationStartIndex)
                         .Contains("role=concept");
 
+                    description = description.Replace("\r", "");
+
                     if (declaration.Contains(":"))
                     {
                         result[currentGroup].Add(new Rule
                         {
-                            Name = declaration,
-                            Description = description,
-                            IsConstraint = isConstraint
+                            key = declaration,
+                            description = description,
+                            type = isConstraint ? RuleType.Constraint : RuleType.Concept
                         });
                     }
                     else
                     {
                         currentGroup = new Group()
                         {
-                            Name = declaration,
-                            Description = description
+                            key = declaration,
+                            name = description
                         };
 
                         result[currentGroup] = new List<Rule>();

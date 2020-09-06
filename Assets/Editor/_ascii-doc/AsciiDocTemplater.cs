@@ -61,9 +61,9 @@ namespace Editor
             {
                 foreach (Rule rule in _rulesByGroup[group])
                 {
-                    if (group.Name != "common" && _ruleCheckboxes[rule])
+                    if (group.key != "common" && _ruleCheckboxes[rule])
                     {
-                        CopyFile(group.Name + ".adoc");
+                        CopyFile(group.key + ".adoc");
                         break;
                     }
                 }
@@ -100,8 +100,8 @@ namespace Editor
             {
                 if (_groupCheckboxes[group])
                 {
-                    string singleInclude = RuleIncludeTemplate.Replace("{{CONCEPTS}}", group.Name + ":*");
-                    singleInclude = singleInclude.Replace("{{CONSTRAINTS}}", group.Name + ":*");
+                    string singleInclude = RuleIncludeTemplate.Replace("{{CONCEPTS}}", group.key + ":*");
+                    singleInclude = singleInclude.Replace("{{CONSTRAINTS}}", group.key + ":*");
 
                     include += singleInclude;
                     continue;
@@ -113,14 +113,14 @@ namespace Editor
                 {
                     if (_ruleCheckboxes[rule])
                     {
-                        if (rule.IsConstraint)
+                        if (rule.type == RuleType.Constraint)
                         {
                             if (constraintsFilter.Length > 0)
                             {
                                 constraintsFilter += ",";
                             }
 
-                            constraintsFilter += rule.Name;
+                            constraintsFilter += rule.key;
                         }
                         else
                         {
@@ -129,7 +129,7 @@ namespace Editor
                                 conceptsFilter += ",";
                             }
 
-                            conceptsFilter += rule.Name;
+                            conceptsFilter += rule.key;
                         }
                     }
                 }
@@ -153,7 +153,7 @@ namespace Editor
 
             foreach (Group group in _groupCheckboxes.Keys)
             {
-                if (group.Name == "common")
+                if (group.key == "common")
                 {
                     continue;
                 }
@@ -162,7 +162,7 @@ namespace Editor
                 {
                     if (_ruleCheckboxes[rule])
                     {
-                        include += FileIncludeTemplate.Replace("{{GROUP}}", group.Name);
+                        include += FileIncludeTemplate.Replace("{{GROUP}}", group.key);
                         break;
                     }
                 }

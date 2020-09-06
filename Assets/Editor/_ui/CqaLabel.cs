@@ -95,5 +95,12 @@ namespace Editor._ui
         {
             GUILayout.Space(15);
         }
+
+        public static void FormError(string text)
+        {
+            GUIStyle guiStyle = new GUIStyle();
+            guiStyle.normal.textColor = new Color(0.7f, 0, 0);
+            EditorGUILayout.LabelField(text, guiStyle);
+        }
     }
 }

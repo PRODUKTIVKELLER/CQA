@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Editor._model;
 using Editor._ui;
+using Editor._windows;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,21 +11,27 @@ namespace Editor._tabs
 {
     public class RuleManager
     {
-        private readonly Dictionary<Group, List<Rule>> _rulesByGroup;
+        private List<Group> _groupList;
         private readonly DataScope _dataScope;
-        private readonly Dictionary<Group, bool> _groupFoldout;
+        private Dictionary<Group, bool> _groupFoldout;
 
         public RuleManager(DataScope dataScope)
         {
             _dataScope = dataScope;
 
-            _rulesByGroup = _dataScope == DataScope.Local
+            OnReload();
+            RuleDao.Instance.OnReload(OnReload);
+        }
+
+        private void OnReload()
+        {
+            _groupList = _dataScope == DataScope.Local
                 ? RuleDetector.DetectLocalRules()
                 : RuleDetector.DetectGlobalRules();
 
             _groupFoldout = new Dictionary<Group, bool>();
 
-            foreach (Group group in _rulesByGroup.Keys)
+            foreach (Group group in _groupList)
             {
                 _groupFoldout[group] = false;
             }
@@ -36,8 +43,8 @@ namespace Editor._tabs
             EditorGUILayout.LabelField("Rules:", EditorStyles.boldLabel);
             EditorGUILayout.Space();
 
-            List<Group> groupsSortedByDescription = _rulesByGroup.Keys.ToList();
-            groupsSortedByDescription.Sort((k1, k2) => string.Compare(k1.Name, k2.Name, StringComparison.Ordinal));
+            List<Group> groupsSortedByDescription = _groupList.ToList();
+            groupsSortedByDescription.Sort((k1, k2) => string.Compare(k1.key, k2.key, StringComparison.Ordinal));
 
             if (groupsSortedByDescription.Count == 0)
             {
@@ -58,7 +65,7 @@ namespace Editor._tabs
                 CqaGroupEditWindow.Open(_dataScope);
             }
 
-            if (_rulesByGroup.Keys.Count > 0 && CqaButton.NormalButton("Create Rule"))
+            if (_groupList.Count > 0 && CqaButton.NormalButton("Create Rule"))
             {
                 CqaRuleEditWindow.Open(_dataScope);
             }
@@ -77,7 +84,7 @@ namespace Editor._tabs
                 CqaGroupEditWindow.Open(_dataScope, group);
             }
 
-            _groupFoldout[group] = EditorGUILayout.Foldout(_groupFoldout[group], group.Description);
+            _groupFoldout[group] = EditorGUILayout.Foldout(_groupFoldout[group], group.name);
             GUILayout.EndHorizontal();
         }
 
@@ -89,7 +96,7 @@ namespace Editor._tabs
                 return;
             }
 
-            foreach (Rule rule in _rulesByGroup[group])
+            foreach (Rule rule in group.rules)
             {
                 // Set a horizontal offset.
                 EditorGUILayout.BeginHorizontal();
@@ -97,10 +104,10 @@ namespace Editor._tabs
 
                 if (CqaButton.EditButton())
                 {
-                    CqaRuleEditWindow.Open(_dataScope, rule);
+                    CqaRuleEditWindow.Open(_dataScope, group, rule);
                 }
 
-                CqaLabel.FoldoutEntry(rule.Description);
+                CqaLabel.FoldoutEntry(rule.description);
                 EditorGUILayout.EndHorizontal();
             }
         }

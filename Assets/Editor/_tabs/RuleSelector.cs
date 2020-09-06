@@ -45,7 +45,7 @@ namespace Editor._tabs
             EditorGUILayout.Space();
 
             List<Group> groupsSortedByDescription = RulesByGroup.Keys.ToList();
-            groupsSortedByDescription.Sort((k1, k2) => string.Compare(k1.Name, k2.Name, StringComparison.Ordinal));
+            groupsSortedByDescription.Sort((k1, k2) => string.Compare(k1.key, k2.key, StringComparison.Ordinal));
 
             foreach (Group group in groupsSortedByDescription)
             {
@@ -56,7 +56,7 @@ namespace Editor._tabs
 
         private void CreateGroupCheckboxAndFoldout(Group group)
         {
-            EditorGUI.BeginDisabledGroup(group.Name == "common");
+            EditorGUI.BeginDisabledGroup(group.key == "common");
             EditorGUILayout.BeginHorizontal();
             bool newGroupValue = EditorGUILayout.Toggle(GroupCheckboxes[group], GUILayout.Width(15));
 
@@ -71,7 +71,7 @@ namespace Editor._tabs
             }
 
             _groupFoldout[group] = EditorGUILayout.Foldout(_groupFoldout[group],
-                new GUIContent(group.Description, group.Name == "common" ? "This must be part of the report." : null));
+                new GUIContent(group.name, group.key == "common" ? "This must be part of the report." : null));
             EditorGUILayout.EndHorizontal();
             EditorGUI.EndDisabledGroup();
         }
@@ -89,10 +89,10 @@ namespace Editor._tabs
                 // Set a horizontal offset.
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.Space(20);
-                EditorGUI.BeginDisabledGroup(group.Name == "common");
+                EditorGUI.BeginDisabledGroup(group.key == "common");
                 bool newValue = EditorGUILayout.ToggleLeft(
-                    new GUIContent(rule.Description,
-                        group.Name == "common" ? "This must be part of the report." : null), RuleCheckboxes[rule]);
+                    new GUIContent(rule.description,
+                        group.key == "common" ? "This must be part of the report." : null), RuleCheckboxes[rule]);
                 EditorGUI.EndDisabledGroup();
                 EditorGUILayout.EndHorizontal();
 

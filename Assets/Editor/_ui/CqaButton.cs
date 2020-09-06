@@ -11,6 +11,14 @@ namespace Editor._ui
             GUILayout.Space(0);
             return pressed;
         }
+        
+        internal static bool SmallButton(string text)
+        {
+            GUILayout.Space(5);
+            bool pressed = GUILayout.Button(text, GUILayout.Width(100));
+            GUILayout.Space(0);
+            return pressed;
+        }
 
         internal static bool EditButton()
         {
