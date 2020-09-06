@@ -1,0 +1,18 @@
+{
+    "key": "code-style",
+    "name": "Code Style",
+    "rules": [
+        {
+            "key": "MaximumLOCPerClass",
+            "description": "No class has more than 300 lines of code.",
+            "cypherQuery": "MATCH\r\n  (c:Class)\r\nWHERE\r\n  c.effectiveLineCount >= 300\r\nRETURN\r\n  c.fqn as FQN, c.effectiveLineCount as `Lines of Code`\r\nORDER BY\r\n  c.effectiveLineCount DESC",
+            "type": 0
+        },
+        {
+            "key": "MaximumComplexityPerMethod",
+            "description": "No method has a higher cyclomatic complexity than 10.",
+            "cypherQuery": "MATCH\r\n  (m:Method)\r\nWHERE\r\n  m.cyclomaticComplexity > 10\r\nRETURN\r\n  m.fqn as FQN, m.cyclomaticComplexity as `Cyclomatic Complexity`\r\nORDER BY\r\n  m.cyclomaticComplexity DESC",
+            "type": 0
+        }
+    ]
+}

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Editor._model;
 using UnityEditor;
 using UnityEngine;
@@ -9,24 +7,33 @@ namespace Editor._tabs
 {
     public class RuleSelector
     {
-        public readonly Dictionary<Group, List<Rule>> RulesByGroup;
-        public readonly Dictionary<Rule, bool> RuleCheckboxes;
-        public readonly Dictionary<Group, bool> GroupCheckboxes;
-        private readonly Dictionary<Group, bool> _groupFoldout;
+        public Dictionary<Rule, bool> RuleCheckboxes;
+        public Dictionary<Group, bool> GroupCheckboxes;
+
+        private Dictionary<Group, bool> _groupFoldout;
+        private List<Group> _builtInGroupList;
 
         internal RuleSelector()
         {
-            RulesByGroup = RuleDetector.DetectBuiltInRules();
+            OnReload();
+
+            RuleDao.Instance.OnReload(OnReload);
+        }
+
+        private void OnReload()
+        {
             RuleCheckboxes = new Dictionary<Rule, bool>();
             GroupCheckboxes = new Dictionary<Group, bool>();
+
+            _builtInGroupList = RuleDao.Instance.GetAllGroups();
             _groupFoldout = new Dictionary<Group, bool>();
 
-            foreach (Group group in RulesByGroup.Keys)
+            foreach (Group group in _builtInGroupList)
             {
                 GroupCheckboxes.Add(group, true);
                 _groupFoldout[group] = false;
 
-                foreach (Rule rule in RulesByGroup[group])
+                foreach (Rule rule in group.rules)
                 {
                     RuleCheckboxes[rule] = true;
                 }
@@ -44,10 +51,7 @@ namespace Editor._tabs
             EditorGUILayout.LabelField("Rules:", EditorStyles.boldLabel);
             EditorGUILayout.Space();
 
-            List<Group> groupsSortedByDescription = RulesByGroup.Keys.ToList();
-            groupsSortedByDescription.Sort((k1, k2) => string.Compare(k1.key, k2.key, StringComparison.Ordinal));
-
-            foreach (Group group in groupsSortedByDescription)
+            foreach (Group group in _builtInGroupList)
             {
                 CreateGroupCheckboxAndFoldout(group);
                 CreateRuleCheckboxesForGroup(group);
@@ -62,7 +66,7 @@ namespace Editor._tabs
 
             if (newGroupValue != GroupCheckboxes[group])
             {
-                foreach (Rule rule in RulesByGroup[group])
+                foreach (Rule rule in group.rules)
                 {
                     RuleCheckboxes[rule] = newGroupValue;
                 }
@@ -84,7 +88,7 @@ namespace Editor._tabs
                 return;
             }
 
-            foreach (Rule rule in RulesByGroup[group])
+            foreach (Rule rule in group.rules)
             {
                 // Set a horizontal offset.
                 EditorGUILayout.BeginHorizontal();
@@ -109,7 +113,7 @@ namespace Editor._tabs
                 return;
             }
 
-            foreach (Rule other in RulesByGroup[group])
+            foreach (Rule other in group.rules)
             {
                 if (other != rule && !RuleCheckboxes[other])
                 {

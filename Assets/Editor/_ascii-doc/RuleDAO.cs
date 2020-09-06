@@ -12,7 +12,7 @@ namespace Editor
 
         private static RuleDao _instance;
 
-        private Dictionary<Group, List<Rule>> _builtInRulesByGroup;
+        private List<Group> _builtInGroupList;
         private List<Group> _localGroupList;
         private List<Group> _globalGroupList;
 
@@ -39,7 +39,7 @@ namespace Editor
             _allGroupKeys.Clear();
             _allGroupNames.Clear();
 
-            _builtInRulesByGroup = RuleDetector.DetectBuiltInRules();
+            _builtInGroupList = RuleDetector.DetectBuiltInRules();
             _localGroupList = RuleDetector.DetectLocalRules();
             _globalGroupList = RuleDetector.DetectGlobalRules();
 
@@ -56,17 +56,11 @@ namespace Editor
                 return _allGroupKeys;
             }
 
-            _allGroupKeys.AddRange(
-                _builtInRulesByGroup.Keys.Select(x => x.key)
-            );
-
-            _allGroupKeys.AddRange(
-                _localGroupList.Select(x => x.key)
-            );
-
-            _allGroupKeys.AddRange(
-                _globalGroupList.Select(x => x.key)
-            );
+            _allGroupKeys = _builtInGroupList
+                .Union(_localGroupList)
+                .Union(_globalGroupList)
+                .Select(x => x.key)
+                .ToList();
 
             return _allGroupKeys;
         }
@@ -78,17 +72,11 @@ namespace Editor
                 return _allGroupNames;
             }
 
-            _allGroupNames.AddRange(
-                _builtInRulesByGroup.Keys.Select(x => x.name)
-            );
-
-            _allGroupNames.AddRange(
-                _localGroupList.Select(x => x.name)
-            );
-
-            _allGroupNames.AddRange(
-                _globalGroupList.Select(x => x.name)
-            );
+            _allGroupNames = _builtInGroupList
+                .Union(_localGroupList)
+                .Union(_globalGroupList)
+                .Select(x => x.name)
+                .ToList();
 
             return _allGroupNames;
         }
@@ -143,6 +131,14 @@ namespace Editor
             }
 
             return DataScope.Local;
+        }
+
+        public List<Group> GetAllGroups()
+        {
+            return _globalGroupList
+                .Union(_localGroupList)
+                .Union(_builtInGroupList)
+                .ToList();
         }
     }
 }

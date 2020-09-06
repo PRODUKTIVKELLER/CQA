@@ -87,5 +87,10 @@ namespace Editor._jqa
         {
             return Path.Combine(BuildJqaPath(), "plugins");
         }
+
+        public static string BuildBuiltInRulesPath()
+        {
+            return Path.Combine(Application.dataPath, "_rules");
+        }
     }
 }

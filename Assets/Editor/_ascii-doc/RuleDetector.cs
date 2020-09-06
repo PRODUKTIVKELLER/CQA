@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Editor._common;
@@ -11,127 +10,31 @@ namespace Editor
 {
     public abstract class RuleDetector
     {
-        public static Dictionary<Group, List<Rule>> DetectBuiltInRules()
+        private static List<Group> DetectRulesAt(string path)
         {
-            List<FileInfo> fileInfoList = FileReader.FindBuiltInAsciidocFiles();
-            return DetectRules(fileInfoList);
+            DirectoryInfo directoryInfo = new DirectoryInfo(path);
+            return directoryInfo.EnumerateFiles("*.json").Select(
+                fileInfo =>
+                {
+                    string text = FileReader.TryToReadFile(fileInfo);
+                    return JsonUtility.FromJson<Group>(text);
+                }
+            ).ToList();
         }
 
         public static List<Group> DetectLocalRules()
         {
-            DirectoryInfo directoryInfo = new DirectoryInfo(JqaPaths.BuildLocalRulesPath());
-            return directoryInfo.EnumerateFiles("*.json").Select(
-                fileInfo =>
-                {
-                    string text = FileReader.TryToReadFile(fileInfo);
-                    return JsonUtility.FromJson<Group>(text);
-                }
-            ).ToList();
+            return DetectRulesAt(JqaPaths.BuildLocalRulesPath());
         }
 
         public static List<Group> DetectGlobalRules()
         {
-            DirectoryInfo directoryInfo = new DirectoryInfo(JqaPaths.BuildGlobalRulesPath());
-            return directoryInfo.EnumerateFiles("*.json").Select(
-                fileInfo =>
-                {
-                    string text = FileReader.TryToReadFile(fileInfo);
-                    return JsonUtility.FromJson<Group>(text);
-                }
-            ).ToList();
+            return DetectRulesAt(JqaPaths.BuildGlobalRulesPath());
         }
 
-        public static Dictionary<Group, List<Rule>> DetectRules(List<FileInfo> fileInfoList)
+        public static List<Group> DetectBuiltInRules()
         {
-            if (fileInfoList.Count == 0)
-            {
-                return new Dictionary<Group, List<Rule>>();
-            }
-
-            Dictionary<Group, List<Rule>> result = new Dictionary<Group, List<Rule>>();
-
-            foreach (FileInfo fileInfo in fileInfoList)
-            {
-                string text = FileReader.TryToReadFile(fileInfo);
-
-                List<int> ruleOrGroupIndexes = IndexOfAll(text, "[[").ToList();
-
-                Group currentGroup = null;
-
-                for (int i = 0; i < ruleOrGroupIndexes.Count; i++)
-                {
-                    int declarationStartIndex = ruleOrGroupIndexes[i] + 2;
-                    int declarationEndIndex = text.IndexOf("]]", declarationStartIndex, StringComparison.Ordinal);
-                    int declarationLength = declarationEndIndex - declarationStartIndex;
-
-                    string declaration =
-                        text.Substring(
-                            declarationStartIndex,
-                            declarationLength
-                        );
-
-                    int descriptionStartIndex = text.IndexOf(".", declarationEndIndex, StringComparison.Ordinal) + 1;
-                    int descriptionEndIndex = text.IndexOf("\n", descriptionStartIndex, StringComparison.Ordinal);
-                    int descriptionLength = descriptionEndIndex - descriptionStartIndex;
-
-                    string description =
-                        text.Substring(
-                            descriptionStartIndex,
-                            descriptionLength
-                        );
-
-                    int nextIndex = i < ruleOrGroupIndexes.Count - 1 ? ruleOrGroupIndexes[i + 1] : text.Length - 1;
-
-                    bool isConstraint = text
-                        .Substring(declarationStartIndex, nextIndex - declarationStartIndex)
-                        .Contains("role=concept");
-
-                    description = description.Replace("\r", "");
-
-                    if (declaration.Contains(":"))
-                    {
-                        result[currentGroup].Add(new Rule
-                        {
-                            key = declaration,
-                            description = description,
-                            type = isConstraint ? RuleType.Constraint : RuleType.Concept
-                        });
-                    }
-                    else
-                    {
-                        currentGroup = new Group()
-                        {
-                            key = declaration,
-                            name = description
-                        };
-
-                        result[currentGroup] = new List<Rule>();
-                    }
-                }
-            }
-
-            return result;
-        }
-
-        private static IEnumerable<int> IndexOfAll(string source, string subString)
-        {
-            List<int> indexes = new List<int>();
-            int index = 0;
-
-            while (true)
-            {
-                index = source.IndexOf(subString, index, StringComparison.Ordinal);
-
-                if (index == -1)
-                {
-                    break;
-                }
-
-                indexes.Add(index);
-                index++;
-            }
-
-            return indexes;
+            return DetectRulesAt(JqaPaths.BuildBuiltInRulesPath());
         }
     }
 }

@@ -7,8 +7,6 @@
 
 include::jQA:Summary[]
 
-{{RULES}}
-
 [[common]]
 .Common
 [role=group,includesConstraints="common:*",includesConcepts="common:*"]

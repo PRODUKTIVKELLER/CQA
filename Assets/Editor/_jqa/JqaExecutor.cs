@@ -109,11 +109,15 @@ namespace Editor._jqa
 
             _isScan = false;
 
-            AsciiDocTemplater asciiDocTemplater = new AsciiDocTemplater(_ruleSelector.GroupCheckboxes,
-                _ruleSelector.RuleCheckboxes, _ruleSelector.RulesByGroup);
+            AsciiDocTemplater asciiDocTemplater = new AsciiDocTemplater(
+                _ruleSelector.GroupCheckboxes,
+                _ruleSelector.RuleCheckboxes
+            );
 
             Log.Debug("Filling templates and copying them to {}.", JqaPaths.BuildJqaHtmlFinishedTemplatesPath());
             asciiDocTemplater.PrepareAnalysis();
+
+            string groupsForCommandLine = asciiDocTemplater.ReturnRelevantGroupsForCommandLine();
 
             _jqAssistantProcess = new Process
             {
@@ -125,7 +129,7 @@ namespace Editor._jqa
                                 " -reportDirectory " + _jqaPaths.BuildJqaReportPath() +
                                 " -s " + _jqaPaths.BuildJqaStorePath() +
                                 " -executeAppliedConcepts" +
-                                " -groups common,code-style",
+                                " -groups " + groupsForCommandLine,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
