@@ -112,6 +112,7 @@ namespace Editor
         public Group GetGroup(string groupKey)
         {
             return _globalGroupList
+                .Union(_localGroupList)
                 .FirstOrDefault(group => group.key == groupKey);
         }
 

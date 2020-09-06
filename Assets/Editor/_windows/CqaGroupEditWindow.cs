@@ -93,6 +93,7 @@ namespace Editor._windows
             if (OldGroup != null && OldGroup.key != group.key)
             {
                 GroupFileDao.Delete(DataScope, OldGroup.key);
+                group.rules = OldGroup.rules;
             }
 
             GroupFileDao.Save(_scopeEnumFormGroup.Value, group);

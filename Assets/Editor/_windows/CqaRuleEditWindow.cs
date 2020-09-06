@@ -150,7 +150,8 @@ namespace Editor._windows
             _groupDropdownFormGroup = DropdownFormGroup.Build(
                 "Group:",
                 "Select to which group this rule should belong.",
-                RuleDao.Instance.GetAvailableGroups()
+                RuleDao.Instance.GetAvailableGroups(),
+                OldGroup?.name
             );
 
             _ruleTypeFormGroup = EnumFormGroup<RuleType>.Build(
