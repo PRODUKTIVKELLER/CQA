@@ -13,6 +13,12 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.AsciiDoc
         private static List<Group> DetectRulesAt(string path)
         {
             DirectoryInfo directoryInfo = new DirectoryInfo(path);
+
+            if (!directoryInfo.Exists)
+            {
+                return new List<Group>();
+            }
+            
             return directoryInfo.EnumerateFiles("*.json").Select(
                 fileInfo =>
                 {

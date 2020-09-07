@@ -75,6 +75,40 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
             _historyWatcher.Start();
         }
 
+        public void StartServer()
+        {
+            if (Application.platform != RuntimePlatform.WindowsEditor)
+            {
+                Log.Error("Detected OS: {}. Only Windows is supported currently.", Application.platform);
+                return;
+            }
+
+            _isScan = true;
+
+            _jqAssistantProcess = new Process
+            {
+                StartInfo =
+                {
+                    FileName = JqaPaths.Instance.BuildJqaExecutablePath(),
+                    Arguments = "server -s " + JqaPaths.Instance.BuildJqaStorePath(),
+                    UseShellExecute = true,
+                    CreateNoWindow = false
+                }
+            };
+
+            _jqAssistantProcess.Start();
+            
+            
+            
+            Thread thread = new Thread(() =>
+            {
+                Thread.Sleep(4000);
+                Process.Start("http://localhost:7474");
+            });
+            
+            thread.Start();
+        }
+
         public bool IsScanProcessRunning()
         {
             return _isScan && _jqAssistantProcess != null && !_jqAssistantProcess.HasExited;

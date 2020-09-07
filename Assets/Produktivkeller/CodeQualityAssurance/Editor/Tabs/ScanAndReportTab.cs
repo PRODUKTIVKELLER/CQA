@@ -48,6 +48,11 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
                 _jqaExecutor.ScanAssets();
             }
 
+            if (Directory.Exists(JqaPaths.Instance.BuildJqaStorePath()) && CqaButton.NormalButton("Start Server"))
+            {
+                _jqaExecutor.StartServer();
+            }
+
             EditorGUI.EndDisabledGroup();
 
             if (_jqaExecutor.IsScanProcessRunning())
