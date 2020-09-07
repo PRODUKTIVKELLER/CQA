@@ -24,17 +24,17 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.AsciiDoc
 
         public static List<Group> DetectLocalRules()
         {
-            return DetectRulesAt(JqaPaths.BuildLocalRulesPath());
+            return DetectRulesAt(JqaPaths.Instance.BuildLocalRulesPath());
         }
 
         public static List<Group> DetectGlobalRules()
         {
-            return DetectRulesAt(JqaPaths.BuildGlobalRulesPath());
+            return DetectRulesAt(JqaPaths.Instance.BuildGlobalRulesPath());
         }
 
         public static List<Group> DetectBuiltInRules()
         {
-            return DetectRulesAt(JqaPaths.BuildBuiltInRulesPath());
+            return DetectRulesAt(JqaPaths.Instance.BuildBuiltInRulesPath());
         }
     }
 }

@@ -18,8 +18,8 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.AsciiDoc
         {
             string fileName = groupKey+ ".json";
             string path = dataScope == DataScope.Local
-                ? JqaPaths.BuildLocalRulesPath()
-                : JqaPaths.BuildGlobalRulesPath();
+                ? JqaPaths.Instance.BuildLocalRulesPath()
+                : JqaPaths.Instance.BuildGlobalRulesPath();
 
             File.Delete(Path.Combine(path, fileName));
 
@@ -29,8 +29,8 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.AsciiDoc
         public static void Save(DataScope dataScope, Group group)
         {
             string path = dataScope == DataScope.Local
-                ? JqaPaths.BuildLocalRulesPath()
-                : JqaPaths.BuildGlobalRulesPath();
+                ? JqaPaths.Instance.BuildLocalRulesPath()
+                : JqaPaths.Instance.BuildGlobalRulesPath();
 
             FileInfo fileInfo = new FileInfo(Path.Combine(path, group.key + ".json"));
             string json = JsonUtility.ToJson(group);

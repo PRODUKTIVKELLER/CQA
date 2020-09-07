@@ -122,7 +122,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.AsciiDoc
 
         private void WriteIndexAdoc()
         {
-            string path = Path.Combine(JqaPaths.BuildJqaHtmlFinishedTemplatesPath(), "index.adoc");
+            string path = Path.Combine(JqaPaths.Instance.BuildJqaHtmlFinishedTemplatesPath(), "index.adoc");
 
             File.WriteAllLines(path,
                 _indexTemplate.Split(new string[] {"\n", "\r\n"}, StringSplitOptions.None));
@@ -144,7 +144,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.AsciiDoc
 
         private static void RecreateOutputFolder()
         {
-            DirectoryInfo directoryInfo = new DirectoryInfo(JqaPaths.BuildJqaHtmlFinishedTemplatesPath());
+            DirectoryInfo directoryInfo = new DirectoryInfo(JqaPaths.Instance.BuildJqaHtmlFinishedTemplatesPath());
             if (directoryInfo.Exists)
             {
                 Directory.Delete(directoryInfo.FullName, true);
