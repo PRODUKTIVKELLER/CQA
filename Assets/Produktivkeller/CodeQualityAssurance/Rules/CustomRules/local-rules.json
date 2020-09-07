@@ -1,1 +1,0 @@
-{"key":"local-rules","name":"Local Rules","rules":[{"key":"ClassesWithMoreThan100LOC","description":"Classes with more than 100 LOC.","cypherQuery":"MATCH\r\n  (c:Class)\r\nWHERE\r\n  c.effectiveLineCount >= 100\r\nRETURN\r\n  c.fqn as FQN, c.effectiveLineCount as `Lines of Code`\r\nORDER BY\r\n  c.effectiveLineCount DESC","type":1}]}
