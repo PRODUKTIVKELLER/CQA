@@ -8,12 +8,12 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.FormComponents
 {
     public class EnumFormGroup<T> where T : struct, IConvertible
     {
-        public T Value => (T) Enum.Parse(typeof(T), _possibleValues[_selected]);
+        private string _description;
+        private string _label;
+        private string[] _possibleValues;
 
         private int _selected;
-        private string _label;
-        private string _description;
-        private string[] _possibleValues;
+        public T Value => (T) Enum.Parse(typeof(T), _possibleValues[_selected]);
 
         public void Show()
         {

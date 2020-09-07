@@ -1,13 +1,12 @@
-﻿using Produktivkeller.CodeQualityAssurance.Editor.JqAssistant;
-using Produktivkeller.CodeQualityAssurance.Editor.UiComponents;
+﻿using Produktivkeller.CodeQualityAssurance.Editor.UiComponents;
 using UnityEditor;
 
 namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
 {
     public class ManageCustomRulesTab
     {
-        private readonly RuleManager _localRuleManager;
         private readonly RuleManager _globalRuleManager;
+        private readonly RuleManager _localRuleManager;
 
         public ManageCustomRulesTab()
         {
@@ -31,7 +30,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
 
             ShowLocalRuleEditor();
         }
-        
+
         private void ShowLocalRuleEditor()
         {
             _localRuleManager.OnGUI();

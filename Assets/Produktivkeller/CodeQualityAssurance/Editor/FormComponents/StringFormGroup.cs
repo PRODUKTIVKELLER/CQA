@@ -7,13 +7,13 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.FormComponents
 {
     public class StringFormGroup
     {
-        public bool Touched { get; private set; }
-        public string Value { get; private set; } = "";
+        private string _description;
 
         private string _initialValue;
         private string _label;
-        private string _description;
         private Func<List<string>> _providePotentialClashes;
+        public bool Touched { get; private set; }
+        public string Value { get; private set; } = "";
 
         public void Show()
         {

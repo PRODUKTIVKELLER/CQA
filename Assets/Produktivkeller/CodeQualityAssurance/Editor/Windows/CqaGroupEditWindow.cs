@@ -11,14 +11,14 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Windows
 {
     public class CqaGroupEditWindow : EditorWindow
     {
+        private StringFormGroup _keyStringFormGroup;
+        private StringFormGroup _nameStringFormGroup;
+        private EnumFormGroup<DataScope> _scopeEnumFormGroup;
+
+        private bool _specificKey;
         private string DialogTitle { get; set; }
         private DataScope DataScope { get; set; }
         private Group OldGroup { get; set; }
-        
-        private bool _specificKey;
-        private StringFormGroup _nameStringFormGroup;
-        private StringFormGroup _keyStringFormGroup;
-        private EnumFormGroup<DataScope> _scopeEnumFormGroup;
 
         private void OnGUI()
         {

@@ -12,9 +12,9 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
 {
     public class RuleManager
     {
-        private List<Group> _groupList;
         private readonly DataScope _dataScope;
         private Dictionary<Group, bool> _groupFoldout;
+        private List<Group> _groupList;
 
         public RuleManager(DataScope dataScope)
         {

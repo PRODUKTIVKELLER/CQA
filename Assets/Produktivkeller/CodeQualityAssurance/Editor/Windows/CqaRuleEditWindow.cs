@@ -11,16 +11,16 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Windows
 {
     public class CqaRuleEditWindow : EditorWindow
     {
+        private TextAreaFormGroup _cypherQueryTextAreaFormGroup;
+        private StringFormGroup _descriptionStringFormGroup;
+        private DropdownFormGroup _groupDropdownFormGroup;
+
+        private StringFormGroup _keyStringFormGroup;
+        private EnumFormGroup<RuleType> _ruleTypeFormGroup;
         private string DialogTitle { get; set; }
         private DataScope DataScope { get; set; }
         private Group OldGroup { get; set; }
         private Rule OldRule { get; set; }
-
-        private StringFormGroup _keyStringFormGroup;
-        private StringFormGroup _descriptionStringFormGroup;
-        private TextAreaFormGroup _cypherQueryTextAreaFormGroup;
-        private EnumFormGroup<RuleType> _ruleTypeFormGroup;
-        private DropdownFormGroup _groupDropdownFormGroup;
 
         private void OnGUI()
         {

@@ -6,8 +6,8 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Logging
     {
         private readonly string _className;
         private readonly LogLevel _configuredLogLevel;
-        private readonly IOutput _output;
         private readonly LogFormatter _logFormatter;
+        private readonly IOutput _output;
 
         public Log(Type type, LogLevel logLevel, IOutput output, LogFormatter logFormatter)
         {

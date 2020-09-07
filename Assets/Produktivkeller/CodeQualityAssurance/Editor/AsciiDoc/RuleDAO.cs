@@ -8,17 +8,15 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.AsciiDoc
 {
     public class RuleDao
     {
-        public static RuleDao Instance => _instance ?? (_instance = new RuleDao());
-
         private static RuleDao _instance;
-
-        private List<Group> _builtInGroupList;
-        private List<Group> _localGroupList;
-        private List<Group> _globalGroupList;
+        private readonly List<Action> _onReloadActions;
 
         private List<string> _allGroupKeys;
         private List<string> _allGroupNames;
-        private readonly List<Action> _onReloadActions;
+
+        private List<Group> _builtInGroupList;
+        private List<Group> _globalGroupList;
+        private List<Group> _localGroupList;
 
         private RuleDao()
         {
@@ -28,6 +26,8 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.AsciiDoc
 
             ReloadAll();
         }
+
+        public static RuleDao Instance => _instance ?? (_instance = new RuleDao());
 
         public void OnReload(Action onReload)
         {

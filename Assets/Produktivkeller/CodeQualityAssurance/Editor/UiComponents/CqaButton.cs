@@ -12,7 +12,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.UiComponents
             GUILayout.Space(0);
             return pressed;
         }
-        
+
         internal static bool SmallButton(string text)
         {
             GUILayout.Space(5);

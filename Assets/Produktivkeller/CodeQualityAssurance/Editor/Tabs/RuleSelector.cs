@@ -8,11 +8,11 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
 {
     public class RuleSelector
     {
-        public Dictionary<Rule, bool> RuleCheckboxes;
-        public Dictionary<Group, bool> GroupCheckboxes;
+        private List<Group> _builtInGroupList;
 
         private Dictionary<Group, bool> _groupFoldout;
-        private List<Group> _builtInGroupList;
+        public Dictionary<Group, bool> GroupCheckboxes;
+        public Dictionary<Rule, bool> RuleCheckboxes;
 
         internal RuleSelector()
         {

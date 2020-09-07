@@ -5,12 +5,12 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.FormComponents
 {
     public class DropdownFormGroup
     {
-        public string Value => _possibleValues[_selectedValue];
+        private string _description;
+        private string _label;
+        private string[] _possibleValues;
 
         private int _selectedValue;
-        private string _label;
-        private string _description;
-        private string[] _possibleValues;
+        public string Value => _possibleValues[_selectedValue];
 
         public void Show()
         {

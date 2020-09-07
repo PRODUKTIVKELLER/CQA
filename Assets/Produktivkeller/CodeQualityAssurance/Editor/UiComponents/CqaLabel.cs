@@ -1,4 +1,4 @@
-﻿using UnityEditor;
+using UnityEditor;
 using UnityEngine;
 
 namespace Produktivkeller.CodeQualityAssurance.Editor.UiComponents

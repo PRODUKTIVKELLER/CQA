@@ -5,11 +5,11 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.FormComponents
 {
     public class TextAreaFormGroup
     {
-        private bool Touched { get; set; }
-        public string Value { get; private set; } = "";
+        private string _description;
 
         private string _label;
-        private string _description;
+        private bool Touched { get; set; }
+        public string Value { get; private set; } = "";
 
         public void Show()
         {
