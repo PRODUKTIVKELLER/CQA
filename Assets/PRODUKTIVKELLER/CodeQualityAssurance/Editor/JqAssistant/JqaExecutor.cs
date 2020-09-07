@@ -16,17 +16,15 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
             LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly HistoryManager _historyManager;
-        private readonly JqaPaths _jqaPaths;
         private readonly RuleSelector _ruleSelector;
         private Thread _historyWatcher;
         private bool _isScan;
         private Process _jqAssistantProcess;
 
-        public JqaExecutor(JqaPaths jqaPaths, HistoryManager historyManager, RuleSelector ruleSelector)
+        public JqaExecutor(HistoryManager historyManager, RuleSelector ruleSelector)
         {
             _ruleSelector = ruleSelector;
             _historyManager = historyManager;
-            _jqaPaths = jqaPaths;
         }
 
         public void ScanAssets()
@@ -43,8 +41,8 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
             {
                 StartInfo =
                 {
-                    FileName = _jqaPaths.BuildJqaExecutablePath(),
-                    Arguments = "scan -reset -f " + Application.dataPath + " -s " + _jqaPaths.BuildJqaStorePath(),
+                    FileName = JqaPaths.Instance.BuildJqaExecutablePath(),
+                    Arguments = "scan -reset -f " + Application.dataPath + " -s " + JqaPaths.Instance.BuildJqaStorePath(),
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
@@ -115,7 +113,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
                 _ruleSelector.RuleCheckboxes
             );
 
-            Log.Debug("Filling templates and copying them to {}.", JqaPaths.BuildJqaHtmlFinishedTemplatesPath());
+            Log.Debug("Filling templates and copying them to {}.", JqaPaths.Instance.BuildJqaHtmlFinishedTemplatesPath());
             asciiDocTemplater.PrepareAnalysis();
 
             string groupsForCommandLine = asciiDocTemplater.ReturnRelevantGroupsForCommandLine();
@@ -124,11 +122,11 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
             {
                 StartInfo =
                 {
-                    FileName = _jqaPaths.BuildJqaExecutablePath(),
+                    FileName = JqaPaths.Instance.BuildJqaExecutablePath(),
                     Arguments = "analyze" +
-                                " -r " + JqaPaths.BuildJqaHtmlFinishedTemplatesPath() +
-                                " -reportDirectory " + _jqaPaths.BuildJqaReportPath() +
-                                " -s " + _jqaPaths.BuildJqaStorePath() +
+                                " -r " + JqaPaths.Instance.BuildJqaHtmlFinishedTemplatesPath() +
+                                " -reportDirectory " + JqaPaths.Instance.BuildJqaReportPath() +
+                                " -s " + JqaPaths.Instance.BuildJqaStorePath() +
                                 " -executeAppliedConcepts" +
                                 " -groups " + groupsForCommandLine,
                     UseShellExecute = false,
@@ -148,7 +146,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
 
         public bool DidFinishSuccessfullyOnce()
         {
-            FileInfo historyFileInfo = new FileInfo(_jqaPaths.BuildCqaHistoryPath());
+            FileInfo historyFileInfo = new FileInfo(JqaPaths.Instance.BuildCqaHistoryPath());
             return historyFileInfo.Exists;
         }
     }

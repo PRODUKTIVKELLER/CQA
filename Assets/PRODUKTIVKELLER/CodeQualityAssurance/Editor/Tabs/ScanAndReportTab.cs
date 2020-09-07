@@ -9,19 +9,17 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
 {
     public class ScanAndReportTab
     {
-        private readonly JqaManager _jqaManager;
-        private readonly JqaExecutor _jqaExecutor;
-        private readonly JqaPaths _jqaPaths;
         private readonly HistoryManager _historyManager;
+        private readonly JqaExecutor _jqaExecutor;
+        private readonly JqaManager _jqaManager;
         private readonly RuleSelector _ruleSelector;
 
         public ScanAndReportTab(JqaManager jqaManager, JqaExecutor jqaExecutor, HistoryManager historyManager,
-            JqaPaths jqaPaths, RuleSelector ruleSelector)
+            RuleSelector ruleSelector)
         {
             _jqaManager = jqaManager;
             _jqaExecutor = jqaExecutor;
             _historyManager = historyManager;
-            _jqaPaths = jqaPaths;
             _ruleSelector = ruleSelector;
         }
 
@@ -56,10 +54,12 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
             {
                 CqaLabel.Bold("Status: Running ...");
 
-                if (CqaButton.NormalButton("Stop Process"))
-                {
-                    _jqaExecutor.StopProcess();
-                }
+                // FIXME: Stopping the process does currently not work.
+                //
+                // if (CqaButton.NormalButton("Stop Process"))
+                // {
+                //     _jqaExecutor.StopProcess();
+                // }
             }
 
             GUILayout.Space(30);
@@ -79,10 +79,12 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
             {
                 CqaLabel.Bold("Status: Running ...");
 
-                if (CqaButton.NormalButton("Stop Process"))
-                {
-                    _jqaExecutor.StopProcess();
-                }
+                // FIXME: Stopping the process does currently not work.
+                //
+                // if (CqaButton.NormalButton("Stop Process"))
+                // {
+                //     _jqaExecutor.StopProcess();
+                // }
             }
 
             _ruleSelector.OnGUI();
@@ -99,7 +101,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
                 _jqaExecutor.CheckAndReport();
             }
 
-            FileInfo reportFileInfo = new FileInfo(_jqaPaths.BuildJqaHtmlReportPath());
+            FileInfo reportFileInfo = new FileInfo(JqaPaths.Instance.BuildJqaHtmlReportPath());
             EditorGUI.BeginDisabledGroup(!reportFileInfo.Exists);
             if (CqaButton.NormalButton("Open Report in Browser"))
             {

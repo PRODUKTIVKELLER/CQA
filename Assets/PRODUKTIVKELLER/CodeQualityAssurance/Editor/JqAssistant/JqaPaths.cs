@@ -11,9 +11,23 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
         private const string CompanyFolderName = "produktivkeller";
         private const string ApplicationFolderName = "unity-code-quality-assurance";
         private const string VersionFolderName = "0.0.1";
+        private static JqaPaths _instance;
+
+        private readonly string _cqaFolderInAssets;
+
+        private JqaPaths()
+        {
+            _cqaFolderInAssets = Directory.GetDirectories(
+                Application.dataPath,
+                Path.Combine("Produktivkeller", "CodeQualityAssurance"),
+                SearchOption.AllDirectories
+            )[0];
+        }
+
+        public static JqaPaths Instance => _instance ?? (_instance = new JqaPaths());
 
 
-        private static string BuildAppDataPath()
+        private string BuildAppDataPath()
         {
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             return Path.Combine(
@@ -34,7 +48,12 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
             return Path.Combine(BuildJqaInstallationPath(), "jqassistant-commandline-neo4jv3-1.8.0");
         }
 
-        private static string BuildJqaDataPath()
+        public string BuildJqaPluginFolderPath()
+        {
+            return Path.Combine(BuildJqaPath(), "plugins");
+        }
+
+        private string BuildJqaDataPath()
         {
             return Path.Combine(BuildAppDataPath(), "data", Application.productName);
         }
@@ -44,14 +63,14 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
             return Path.Combine(BuildJqaDataPath(), "store");
         }
 
-        public string BuildJqaReportPath()
-        {
-            return Path.Combine(BuildJqaDataPath(), "report");
-        }
-
         public string BuildCqaHistoryPath()
         {
             return Path.Combine(BuildJqaStorePath(), "cqa.json");
+        }
+
+        public string BuildJqaReportPath()
+        {
+            return Path.Combine(BuildJqaDataPath(), "report");
         }
 
         public string BuildJqaHtmlReportPath()
@@ -59,17 +78,27 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
             return Path.Combine(BuildJqaReportPath(), "asciidoc", "index.html");
         }
 
-        public static string BuildJqaHtmlFinishedTemplatesPath()
+        public string BuildJqaHtmlFinishedTemplatesPath()
         {
             return Path.Combine(BuildJqaDataPath(), "finished-templates");
         }
 
-        public static string BuildLocalRulesPath()
+        private string BuildAssetsRulesPath()
         {
-            return Path.Combine(Application.dataPath, "CQA Rules");
+            return Path.Combine(_cqaFolderInAssets, "Rules");
         }
 
-        public static string BuildGlobalRulesPath()
+        public string BuildBuiltInRulesPath()
+        {
+            return Path.Combine(BuildAssetsRulesPath(), "BuiltInRules");
+        }
+
+        public string BuildLocalRulesPath()
+        {
+            return Path.Combine(BuildAssetsRulesPath(), "CustomRules");
+        }
+
+        public string BuildGlobalRulesPath()
         {
             return Path.Combine(BuildJqaDataPath(), "custom-rules");
         }
@@ -82,14 +111,9 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
             return Path.Combine(BuildJqaPath(), "bin", platformSpecificCommand);
         }
 
-        public string BuildJqaPluginFolderPath()
+        public string BuildIndexAdocTemplatePath()
         {
-            return Path.Combine(BuildJqaPath(), "plugins");
-        }
-
-        public static string BuildBuiltInRulesPath()
-        {
-            return Path.Combine(Application.dataPath, "_rules");
+            return Path.Combine(_cqaFolderInAssets, "AsciiDocTemplate", "index.adoc");
         }
     }
 }

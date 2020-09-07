@@ -11,19 +11,21 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Windows
     public class CqaMainWindow : EditorWindow
     {
         private HistoryManager _historyManager;
-        private JqaManager _jqaManager;
-        private JqaExecutor _jqaExecutor;
         private InstallTab _installTab;
-        private ScanAndReportTab _scanAndReportTab;
+        private JqaExecutor _jqaExecutor;
+        private JqaManager _jqaManager;
         private ManageCustomRulesTab _manageCustomRulesTab;
-        private RuleSelector _ruleSelector;
-        private int _selectedTab;
         private GUIStyle _navigationButtonStyle;
+        private RuleSelector _ruleSelector;
+        private ScanAndReportTab _scanAndReportTab;
+        private int _selectedTab;
 
         [MenuItem("CQA/Main Window")]
         public static void ShowWindow()
         {
-            GetWindow(typeof(CqaMainWindow), true, "Code Quality Assurance");
+            CqaMainWindow cqaMainWindow =
+                (CqaMainWindow) GetWindow(typeof(CqaMainWindow), true, "Code Quality Assurance");
+            cqaMainWindow.minSize = new Vector2(960, 540);
         }
 
         private void OnGUI()
@@ -59,11 +61,9 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Windows
         // FIXME: Remove null checks.
         private void InitializeFieldsIfNecessary()
         {
-            JqaPaths jqaPaths = new JqaPaths();
-
             if (_jqaManager == null)
             {
-                _jqaManager = new JqaManager(jqaPaths);
+                _jqaManager = new JqaManager();
             }
 
             if (_historyManager == null)
@@ -78,13 +78,13 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Windows
 
             if (_jqaExecutor == null)
             {
-                _jqaExecutor = new JqaExecutor(jqaPaths, _historyManager, _ruleSelector);
+                _jqaExecutor = new JqaExecutor(_historyManager, _ruleSelector);
             }
 
             if (_scanAndReportTab == null)
             {
                 _scanAndReportTab =
-                    new ScanAndReportTab(_jqaManager, _jqaExecutor, _historyManager, jqaPaths, _ruleSelector);
+                    new ScanAndReportTab(_jqaManager, _jqaExecutor, _historyManager, _ruleSelector);
             }
 
             if (_installTab == null)

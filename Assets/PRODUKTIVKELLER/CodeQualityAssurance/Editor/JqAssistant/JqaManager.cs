@@ -21,17 +21,11 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
         private static readonly ILog Log =
             LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly JqaPaths _jqaPaths;
         private Thread _installThread;
-
-        public JqaManager(JqaPaths jqaPaths)
-        {
-            _jqaPaths = jqaPaths;
-        }
 
         public bool CheckIfJqaIsInstalled()
         {
-            return Directory.Exists(_jqaPaths.BuildJqaInstallationPath());
+            return Directory.Exists(JqaPaths.Instance.BuildJqaInstallationPath());
         }
 
         public bool CheckIfJqaIsInstalling()
@@ -52,8 +46,8 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
                     Thread.CurrentThread.IsBackground = true;
 
                     Log.Debug("Creating installation directory for jQA under {} ...",
-                        _jqaPaths.BuildJqaInstallationPath());
-                    Directory.CreateDirectory(_jqaPaths.BuildJqaInstallationPath());
+                        JqaPaths.Instance.BuildJqaInstallationPath());
+                    Directory.CreateDirectory(JqaPaths.Instance.BuildJqaInstallationPath());
 
                     DownloadJqa();
                     DownloadCSharpPlugin();
@@ -67,7 +61,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
 
         private void DownloadCSharpPlugin()
         {
-            string jarTargetPath = Path.Combine(_jqaPaths.BuildJqaPluginFolderPath(), JqaCsharpPluginFileName);
+            string jarTargetPath = Path.Combine(JqaPaths.Instance.BuildJqaPluginFolderPath(), JqaCsharpPluginFileName);
 
             using (WebClient webClient = new WebClient())
             {
@@ -88,7 +82,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
 
         private void DownloadJqa()
         {
-            string zipTargetPath = Path.Combine(_jqaPaths.BuildJqaInstallationPath(), "temp.zip");
+            string zipTargetPath = Path.Combine(JqaPaths.Instance.BuildJqaInstallationPath(), "temp.zip");
 
             using (WebClient webClient = new WebClient())
             {
@@ -103,7 +97,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
             }
 
             Log.Debug("Extracting zip at {} ...", zipTargetPath);
-            ZipFile.ExtractToDirectory(zipTargetPath, _jqaPaths.BuildJqaInstallationPath());
+            ZipFile.ExtractToDirectory(zipTargetPath, JqaPaths.Instance.BuildJqaInstallationPath());
 
             Log.Debug("Deleting zip at {} ...", zipTargetPath);
             File.Delete(zipTargetPath);
@@ -111,7 +105,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
 
         public void UninstallJqa()
         {
-            Directory.Delete(_jqaPaths.BuildJqaInstallationPath(), true);
+            Directory.Delete(JqaPaths.Instance.BuildJqaInstallationPath(), true);
             Log.Debug("Successfully uninstalled CQA.");
         }
 

@@ -8,14 +8,12 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.History
 {
     public class HistoryManager
     {
-        private static readonly JqaPaths JqaPaths = new JqaPaths();
-
-        private History _history;
         private readonly FileInfo _fileInfo;
+        private History _history;
 
         internal HistoryManager()
         {
-            _fileInfo = new FileInfo(JqaPaths.BuildCqaHistoryPath());
+            _fileInfo = new FileInfo(JqaPaths.Instance.BuildCqaHistoryPath());
 
             LoadHistory();
         }
