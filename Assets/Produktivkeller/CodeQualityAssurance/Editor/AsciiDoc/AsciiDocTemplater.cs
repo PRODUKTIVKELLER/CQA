@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using Produktivkeller.CodeQualityAssurance.Editor.AsciiDoc.Model;
@@ -10,9 +10,9 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.AsciiDoc
 {
     public class AsciiDocTemplater
     {
+        private readonly Dictionary<Group, bool> _groupCheckboxes;
         private readonly List<Group> _groupList;
         private readonly Dictionary<Rule, bool> _ruleCheckboxes;
-        private readonly Dictionary<Group, bool> _groupCheckboxes;
 
         private string _indexTemplate;
         private string _relevantGroupsForCommandLine;
@@ -20,7 +20,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.AsciiDoc
         public AsciiDocTemplater(Dictionary<Group, bool> groupCheckboxes, Dictionary<Rule, bool> ruleCheckboxes)
         {
             _relevantGroupsForCommandLine = "";
-            
+
             _ruleCheckboxes = ruleCheckboxes;
             _groupCheckboxes = groupCheckboxes;
 
@@ -58,7 +58,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.AsciiDoc
                 if (_groupCheckboxes[group])
                 {
                     AddRelevantGroupForCommandLine(group.key);
-                    
+
                     include += BuildGroupDeclaration(group);
                     include += BuildAllRulesOfGroup(group);
                     continue;
@@ -72,7 +72,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.AsciiDoc
                         if (first)
                         {
                             AddRelevantGroupForCommandLine(group.key);
-                            
+
                             include += BuildGroupDeclaration(group);
                             first = false;
                         }
@@ -125,7 +125,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.AsciiDoc
             string path = Path.Combine(JqaPaths.Instance.BuildJqaHtmlFinishedTemplatesPath(), "index.adoc");
 
             File.WriteAllLines(path,
-                _indexTemplate.Split(new string[] {"\n", "\r\n"}, StringSplitOptions.None));
+                _indexTemplate.Split(new[] {"\n", "\r\n"}, StringSplitOptions.None));
         }
 
         private void BuildIndexAdoc()

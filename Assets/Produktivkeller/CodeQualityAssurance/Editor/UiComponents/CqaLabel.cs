@@ -1,4 +1,4 @@
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace Produktivkeller.CodeQualityAssurance.Editor.UiComponents
@@ -13,7 +13,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.UiComponents
             EditorGUILayout.LabelField(text, guiStyle);
             GUILayout.Space(20);
         }
-        
+
         internal static void Heading2(string text)
         {
             GUIStyle guiStyle = new GUIStyle {fontSize = 15, fontStyle = FontStyle.Bold};
@@ -62,26 +62,26 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.UiComponents
             EditorGUILayout.LabelField(text);
             EditorGUILayout.Space();
         }
-        
+
         internal static void Slim(string text)
         {
             EditorGUILayout.LabelField(text);
         }
-        
+
         internal static void FormLabel(string text)
         {
             GUIStyle guiStyle = new GUIStyle();
             guiStyle.fontStyle = FontStyle.Bold;
-            
+
             EditorGUILayout.LabelField(text, guiStyle);
         }
-        
+
         internal static void FormDescription(string text)
         {
             GUIStyle guiStyle = new GUIStyle();
             guiStyle.wordWrap = true;
             guiStyle.padding = new RectOffset(3, 0, 5, 10);
-            
+
             EditorGUILayout.LabelField(text, guiStyle);
         }
 

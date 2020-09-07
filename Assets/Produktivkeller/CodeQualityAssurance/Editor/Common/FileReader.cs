@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Reflection;
+using Produktivkeller.CodeQualityAssurance.Editor.JqAssistant;
 using Produktivkeller.CodeQualityAssurance.Editor.Logging;
-using UnityEngine;
 
 namespace Produktivkeller.CodeQualityAssurance.Editor.Common
 {
@@ -12,7 +12,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Common
 
         public static string ReadIndexAsciidoc()
         {
-            FileInfo fileInfo = new FileInfo(Path.Combine(Application.dataPath, "_template", "index.adoc"));
+            FileInfo fileInfo = new FileInfo(JqaPaths.Instance.BuildIndexAdocTemplatePath());
             return TryToReadFile(fileInfo);
         }
 

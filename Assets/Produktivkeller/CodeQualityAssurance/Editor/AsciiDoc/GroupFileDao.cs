@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Reflection;
 using Produktivkeller.CodeQualityAssurance.Editor.AsciiDoc.Model;
@@ -50,7 +50,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.AsciiDoc
             Delete(dataScope, groupKey);
             Save(dataScope, group);
         }
-        
+
         public static void Save(DataScope dataScope, string groupName, Rule rule)
         {
             Group group = RuleDao.Instance.GetGroupByName(groupName);
