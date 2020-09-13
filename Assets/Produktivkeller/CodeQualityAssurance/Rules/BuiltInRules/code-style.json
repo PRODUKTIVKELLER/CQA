@@ -13,6 +13,18 @@
             "description": "No method has a higher cyclomatic complexity than 10.",
             "cypherQuery": "MATCH\r\n  (m:Method)\r\nWHERE\r\n  m.cyclomaticComplexity > 10\r\nRETURN\r\n  m.fqn as FQN, m.cyclomaticComplexity as `Cyclomatic Complexity`\r\nORDER BY\r\n  m.cyclomaticComplexity DESC",
             "type": 0
+        },
+        {
+            "cypherQuery": "MATCH\r\n\t p=(cc:Class)-[r:EXTENDS*]->(bc:Class)    \r\nWITH \r\n\tcc.fqn AS fqn, max(length(p)) AS depth\r\nWHERE\r\n\tdepth > 2\r\nRETURN \r\n\tfqn as FQN, depth as `Inheritance Depth`\r\nORDER BY\r\n\tdepth DESC",
+            "description": "No class with an inheritance depth greater than two is allowed.",
+            "key": "MaxInheritanceDepthOfTwo",
+            "type": 0
+        },
+        {
+            "cypherQuery": "MATCH\r\n\t(m:Method)-[HAS]->(p:Parameter)\r\nWITH\r\n\tm.fqn AS fqn,  count(p) AS paramCount\r\nWHERE\r\n\tparamCount > 3\r\nRETURN\r\n\tfqn AS FQN, paramCount AS `Number Of Parameters`\r\nORDER BY \r\n\tparamCount DESC",
+            "description": "No method has more than 3 parameters.",
+            "key": "MaxParameterCountOfThree",
+            "type": 0
         }
     ]
 }
