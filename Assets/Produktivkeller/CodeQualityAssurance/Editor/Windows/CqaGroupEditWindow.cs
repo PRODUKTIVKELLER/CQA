@@ -58,8 +58,13 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Windows
             {
                 Delete();
             }
-
+            
             GUILayout.EndHorizontal();
+            
+            if (CqaButton.SmallButton("Abort"))
+            {
+                Close();
+            }
         }
 
         private void Delete()

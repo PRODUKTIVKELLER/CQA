@@ -21,6 +21,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
             _dataScope = dataScope;
 
             OnReload();
+            
             RuleDao.Instance.OnReload(OnReload);
         }
 
@@ -41,8 +42,14 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
         public void OnGUI()
         {
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Rules:", EditorStyles.boldLabel);
-            EditorGUILayout.Space();
+            EditorGUILayout.LabelField((_dataScope == DataScope.Local ? "Local " : "Global ") + "Rules:",
+                EditorStyles.boldLabel);
+
+            CqaLabel.Italic(
+                _dataScope == DataScope.Local
+                    ? "Local rules are only available for the current project. They are located in the Assets folder and can be shared via VCS."
+                    : "Global rules are available for all Unity projects of your user. They are not located in the Assets folder."
+            );
 
             List<Group> groupsSortedByDescription = _groupList.ToList();
             groupsSortedByDescription.Sort((k1, k2) => string.Compare(k1.key, k2.key, StringComparison.Ordinal));
@@ -59,21 +66,6 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
             }
 
             GUILayout.Space(20);
-
-            GUILayout.BeginHorizontal();
-            if (CqaButton.NormalButton("Create Group"))
-            {
-                CqaGroupEditWindow.Open(_dataScope);
-            }
-
-            if (_groupList.Count > 0 && CqaButton.NormalButton("Create Rule"))
-            {
-                CqaRuleEditWindow.Open(_dataScope);
-            }
-
-            GUILayout.EndHorizontal();
-
-            GUILayout.Space(30);
         }
 
 
@@ -111,6 +103,11 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
                 CqaLabel.FoldoutEntry(rule.description);
                 EditorGUILayout.EndHorizontal();
             }
+        }
+
+        public bool DoGroupsExist()
+        {
+            return _groupList != null && _groupList.Count > 0;
         }
     }
 }

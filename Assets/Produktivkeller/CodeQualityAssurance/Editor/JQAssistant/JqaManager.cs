@@ -23,7 +23,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
 
         private Thread _installThread;
 
-        public bool CheckIfJqaIsInstalled()
+        public static bool CheckIfJqaIsInstalled()
         {
             return Directory.Exists(JqaPaths.Instance.BuildJqaInstallationPath());
         }
@@ -103,7 +103,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
             File.Delete(zipTargetPath);
         }
 
-        public void UninstallJqa()
+        public static void UninstallJqa()
         {
             Directory.Delete(JqaPaths.Instance.BuildJqaInstallationPath(), true);
             Log.Debug("Successfully uninstalled CQA.");

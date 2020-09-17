@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
 {
-    // FIXME: Support flexible folder position in project, and either make all methods static or not.
     public class JqaPaths
     {
         private const string CompanyFolderName = "produktivkeller";
@@ -25,7 +24,6 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
         }
 
         public static JqaPaths Instance => _instance ?? (_instance = new JqaPaths());
-
 
         private string BuildAppDataPath()
         {

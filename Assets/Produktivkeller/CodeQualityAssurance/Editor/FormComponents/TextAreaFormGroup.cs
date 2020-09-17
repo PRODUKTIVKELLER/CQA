@@ -8,26 +8,28 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.FormComponents
         private string _description;
 
         private string _label;
+        private string _value = "";
         private bool Touched { get; set; }
-        public string Value { get; private set; } = "";
+        public string Value => _value?.Trim();
 
         public void Show()
         {
             CqaLabel.FormLabel(_label);
             CqaLabel.FormDescription(_description);
             string newValue = GUILayout.TextArea(Value, GUILayout.MinHeight(100));
-            
+
             if (newValue != Value)
             {
                 Touched = true;
             }
 
-            Value = newValue;
+            _value = newValue;
 
             if (Touched && newValue.Length == 0)
             {
                 CqaLabel.FormError("This field can not be empty.");
             }
+
             CqaLabel.FormGroupSpacing();
         }
 
@@ -37,10 +39,12 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.FormComponents
             string initialValue
         )
         {
-            TextAreaFormGroup stringFormGroup = new TextAreaFormGroup();
-            stringFormGroup.Value = initialValue?? "";
-            stringFormGroup._label = label;
-            stringFormGroup._description = description;
+            TextAreaFormGroup stringFormGroup = new TextAreaFormGroup
+            {
+                _value = initialValue ?? "",
+                _label = label,
+                _description = description
+            };
             return stringFormGroup;
         }
 

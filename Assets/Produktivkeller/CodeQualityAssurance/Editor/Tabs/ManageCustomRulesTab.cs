@@ -1,5 +1,6 @@
 ﻿using Produktivkeller.CodeQualityAssurance.Editor.UiComponents;
-using UnityEditor;
+using Produktivkeller.CodeQualityAssurance.Editor.Windows;
+using UnityEngine;
 
 namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
 {
@@ -16,19 +17,28 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
 
         public void Show()
         {
-            CqaLabel.Heading1("Manage Global Rules");
-            CqaLabel.Normal(
-                "Global rules are available for all Unity projects of your user. They are not located in the Assets folder.");
+            CqaLabel.Heading1("Manage Custom Rules");
 
             ShowGlobalRuleEditor();
-
-            CqaLine.DrawHorizontalLine();
-
-            CqaLabel.Heading1("Manage " + PlayerSettings.productName + " Rules");
-            CqaLabel.Normal(
-                "Local rules are only available for the current project. They are located in the Assets folder and can be shared via VCS.");
-
             ShowLocalRuleEditor();
+
+            GUILayout.Space(20);
+
+            GUILayout.BeginHorizontal();
+            if (CqaButton.NormalButton("Create Group"))
+            {
+                CqaGroupEditWindow.Open(DataScope.Local);
+            }
+
+            if ((_localRuleManager.DoGroupsExist() || _globalRuleManager.DoGroupsExist()) &&
+                CqaButton.NormalButton("Create Rule"))
+            {
+                CqaRuleEditWindow.Open(DataScope.Local);
+            }
+
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(30);
         }
 
         private void ShowLocalRuleEditor()

@@ -12,8 +12,10 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.FormComponents
         private string _initialValue;
         private string _label;
         private Func<List<string>> _providePotentialClashes;
+        private string _value = "";
         public bool Touched { get; private set; }
-        public string Value { get; private set; } = "";
+
+        public string Value => _value?.Trim();
 
         public void Show()
         {
@@ -26,7 +28,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.FormComponents
                 Touched = true;
             }
 
-            Value = newValue;
+            _value = newValue;
 
             if (Touched && newValue.Length == 0)
             {
@@ -42,7 +44,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.FormComponents
 
         public void Autofill(string value)
         {
-            Value = value;
+            _value = value;
             Touched = false;
         }
 
@@ -63,12 +65,14 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.FormComponents
             Func<List<string>> providePotentialClashes
         )
         {
-            StringFormGroup stringFormGroup = new StringFormGroup();
-            stringFormGroup._initialValue = initialValue;
-            stringFormGroup.Value = initialValue;
-            stringFormGroup._label = label;
-            stringFormGroup._description = description;
-            stringFormGroup._providePotentialClashes = providePotentialClashes;
+            StringFormGroup stringFormGroup = new StringFormGroup
+            {
+                _initialValue = initialValue,
+                _value = initialValue,
+                _label = label,
+                _description = description,
+                _providePotentialClashes = providePotentialClashes
+            };
             return stringFormGroup;
         }
 

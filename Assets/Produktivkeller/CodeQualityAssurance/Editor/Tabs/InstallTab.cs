@@ -23,7 +23,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
             {
                 CqaLabel.Bold("Status: Installing ...");
             }
-            else if (_jqaManager.CheckIfJqaIsInstalled())
+            else if (JqaManager.CheckIfJqaIsInstalled())
             {
                 CqaLabel.Success("Status: Installed");
             }
@@ -32,7 +32,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
                 CqaLabel.Error("Status: Not Installed");
             }
 
-            if (!_jqaManager.CheckIfJqaIsInstalled())
+            if (!JqaManager.CheckIfJqaIsInstalled())
             {
                 GUILayout.Label("CQA is not installed yet.");
                 GUILayout.Label("To install it we need to download files from jqassistant.org and github.com.");
@@ -63,7 +63,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
                         Thread.Sleep(0);
                     }
 
-                    _jqaManager.UninstallJqa();
+                    JqaManager.UninstallJqa();
                 }
 
                 return;
@@ -72,7 +72,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
             EditorGUILayout.Space();
             if (CqaButton.NormalButton("Uninstall"))
             {
-                _jqaManager.UninstallJqa();
+                JqaManager.UninstallJqa();
             }
         }
     }

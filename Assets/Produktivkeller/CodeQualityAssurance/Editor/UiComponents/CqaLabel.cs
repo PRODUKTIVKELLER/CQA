@@ -63,6 +63,16 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.UiComponents
             EditorGUILayout.Space();
         }
 
+        internal static void Italic(string text)
+        {
+            GUIStyle guiStyle = new GUIStyle();
+            guiStyle.fontStyle = FontStyle.Italic;
+            
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField(text, guiStyle);
+            EditorGUILayout.Space();
+        }
+
         internal static void Slim(string text)
         {
             EditorGUILayout.LabelField(text);

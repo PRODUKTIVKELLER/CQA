@@ -12,7 +12,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.UiStyles
             GUIStyle guiStyle = new GUIStyle(GUI.skin.label)
             {
                 margin = new RectOffset(0, 20, 10, 0),
-                padding = new RectOffset(15, 0, 5, 5),
+                padding = new RectOffset(15, 0, 15, 15),
                 fixedWidth = 200,
                 normal =
                 {

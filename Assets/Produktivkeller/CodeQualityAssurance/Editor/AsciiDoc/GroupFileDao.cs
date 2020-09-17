@@ -32,6 +32,11 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.AsciiDoc
                 ? JqaPaths.Instance.BuildLocalRulesPath()
                 : JqaPaths.Instance.BuildGlobalRulesPath();
 
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
             FileInfo fileInfo = new FileInfo(Path.Combine(path, group.key + ".json"));
             string json = JsonUtility.ToJson(group);
 

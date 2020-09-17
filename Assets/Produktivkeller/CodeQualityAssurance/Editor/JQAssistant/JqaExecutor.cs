@@ -42,7 +42,8 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
                 StartInfo =
                 {
                     FileName = JqaPaths.Instance.BuildJqaExecutablePath(),
-                    Arguments = "scan -reset -f " + Application.dataPath + " -s " + JqaPaths.Instance.BuildJqaStorePath(),
+                    Arguments = "scan -reset -f " + Application.dataPath + " -s " +
+                                JqaPaths.Instance.BuildJqaStorePath(),
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
@@ -97,15 +98,14 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
             };
 
             _jqAssistantProcess.Start();
-            
-            
-            
+
+
             Thread thread = new Thread(() =>
             {
                 Thread.Sleep(4000);
                 Process.Start("http://localhost:7474");
             });
-            
+
             thread.Start();
         }
 
@@ -147,7 +147,8 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
                 _ruleSelector.RuleCheckboxes
             );
 
-            Log.Debug("Filling templates and copying them to {}.", JqaPaths.Instance.BuildJqaHtmlFinishedTemplatesPath());
+            Log.Debug("Filling templates and copying them to {}.",
+                JqaPaths.Instance.BuildJqaHtmlFinishedTemplatesPath());
             asciiDocTemplater.PrepareAnalysis();
 
             string groupsForCommandLine = asciiDocTemplater.ReturnRelevantGroupsForCommandLine();
@@ -178,7 +179,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
             _jqAssistantProcess.BeginErrorReadLine();
         }
 
-        public bool DidFinishSuccessfullyOnce()
+        public static bool DidFinishSuccessfullyOnce()
         {
             FileInfo historyFileInfo = new FileInfo(JqaPaths.Instance.BuildCqaHistoryPath());
             return historyFileInfo.Exists;

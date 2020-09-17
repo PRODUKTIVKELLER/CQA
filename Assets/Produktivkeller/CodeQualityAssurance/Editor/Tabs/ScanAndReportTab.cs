@@ -27,7 +27,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
         {
             CqaLabel.Heading1("Scan");
 
-            if (!_jqaManager.CheckIfJqaIsInstalled())
+            if (!JqaManager.CheckIfJqaIsInstalled())
             {
                 CqaLabel.Error("CQA is currently not installed.");
                 return;
@@ -72,7 +72,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
 
             CqaLabel.Heading1("Report");
 
-            if (!_jqaExecutor.DidFinishSuccessfullyOnce())
+            if (!JqaExecutor.DidFinishSuccessfullyOnce())
             {
                 CqaLabel.Error("You must scan your project before you can create a report.");
                 return;

@@ -20,7 +20,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Windows
         private ScanAndReportTab _scanAndReportTab;
         private int _selectedTab;
 
-        [MenuItem("CQA/Main Window")]
+        [MenuItem("CQA/Code Quality Assurance")]
         public static void ShowWindow()
         {
             CqaMainWindow cqaMainWindow =
@@ -35,7 +35,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Windows
             EditorGUILayout.BeginHorizontal();
 
             _selectedTab = GUILayout.SelectionGrid(_selectedTab,
-                new[] {"Install & Uninstall", "Scan & Report", "Manage Custom Rules", "Tutorial"}, 1,
+                new[] {"Install & Uninstall", "Scan & Report", "Manage Custom Rules"}, 1,
                 _navigationButtonStyle);
 
             CqaLine.DrawNavigationLine(position.height);
@@ -58,49 +58,22 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Windows
             EditorGUILayout.EndHorizontal();
         }
 
-        // FIXME: Remove null checks.
         private void InitializeFieldsIfNecessary()
         {
-            if (_jqaManager == null)
+            if (_jqaManager != null)
             {
-                _jqaManager = new JqaManager();
+                return;
             }
-
-            if (_historyManager == null)
-            {
-                _historyManager = new HistoryManager();
-            }
-
-            if (_ruleSelector == null)
-            {
-                _ruleSelector = new RuleSelector();
-            }
-
-            if (_jqaExecutor == null)
-            {
-                _jqaExecutor = new JqaExecutor(_historyManager, _ruleSelector);
-            }
-
-            if (_scanAndReportTab == null)
-            {
-                _scanAndReportTab =
-                    new ScanAndReportTab(_jqaManager, _jqaExecutor, _historyManager, _ruleSelector);
-            }
-
-            if (_installTab == null)
-            {
-                _installTab = new InstallTab(_jqaManager);
-            }
-
-            if (_manageCustomRulesTab == null)
-            {
-                _manageCustomRulesTab = new ManageCustomRulesTab();
-            }
-
-            if (_navigationButtonStyle == null)
-            {
-                _navigationButtonStyle = NavigationButtonStyleProvider.Provide();
-            }
+            
+            _jqaManager = new JqaManager();
+            _historyManager = new HistoryManager();
+            _ruleSelector = new RuleSelector();
+            _jqaExecutor = new JqaExecutor(_historyManager, _ruleSelector);
+            _scanAndReportTab =
+                new ScanAndReportTab(_jqaManager, _jqaExecutor, _historyManager, _ruleSelector);
+            _installTab = new InstallTab(_jqaManager);
+            _manageCustomRulesTab = new ManageCustomRulesTab();
+            _navigationButtonStyle = NavigationButtonStyleProvider.Provide();
         }
     }
 }
