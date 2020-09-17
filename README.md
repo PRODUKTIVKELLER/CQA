@@ -1,6 +1,10 @@
-# Unity 3D Code Quality Assurance
+# Code Quality Assurance
 
 **CQA** is a code quality assurance tool for [Unity 3D](https://unity.com/).
+
+## Handbook
+
+Have a look at the [HANDBOOK.md](HANDBOOK.md).
 
 ## Development
 
