@@ -15,7 +15,7 @@ include::jQA:Summary[]
 
 [[common:Overview]]
 .How much did we scan?
-[source,cypher,role=concept,rowCountMin=1]
+[source,cypher,role=concept]
 ----
 MATCH 
   (m:Method)
@@ -51,8 +51,8 @@ RETURN
 
 
 [[common:Metrics]]
-.Here are a few general metrics.
-[source,cypher,role=concept,rowCountMin=1]
+.General metrics.
+[source,cypher,role=concept]
 ----
 MATCH
   (m:Method)

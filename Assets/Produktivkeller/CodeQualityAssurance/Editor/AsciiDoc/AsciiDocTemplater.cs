@@ -19,7 +19,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.AsciiDoc
 
         public AsciiDocTemplater(Dictionary<Group, bool> groupCheckboxes, Dictionary<Rule, bool> ruleCheckboxes)
         {
-            _relevantGroupsForCommandLine = "";
+            _relevantGroupsForCommandLine = "common";
 
             _ruleCheckboxes = ruleCheckboxes;
             _groupCheckboxes = groupCheckboxes;
