@@ -58,14 +58,14 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Windows
             {
                 Delete();
             }
-            
+
             GUILayout.EndHorizontal();
 
             if (CqaButton.SmallButton("Abort"))
             {
                 Close();
             }
-            
+
             GUILayout.Space(10);
         }
 
@@ -107,25 +107,18 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Windows
 
         public static void Open(DataScope dataScope, Group group = null, Rule rule = null)
         {
-            string title = BuildTitle(rule);
+            string dialogTitle = BuildTitle(rule);
 
             CqaRuleEditWindow cqaRuleEditWindow =
-                GetWindow<CqaRuleEditWindow>(true, title);
-
-            // cqaRuleEditWindow. = new Vector2(500, 700);
+                GetWindow<CqaRuleEditWindow>(true, dialogTitle);
+            
             cqaRuleEditWindow.minSize = new Vector2(500, 700);
+            cqaRuleEditWindow.DialogTitle = dialogTitle;
+            cqaRuleEditWindow.OldRule = rule;
+            cqaRuleEditWindow.OldGroup = group;
+            cqaRuleEditWindow.DataScope = dataScope;
 
-            cqaRuleEditWindow.Init(dataScope, title, rule, group);
-        }
-
-        private void Init(DataScope dataScope, string dialogTitle, Rule rule, Group group)
-        {
-            DialogTitle = dialogTitle;
-            OldRule = rule;
-            OldGroup = group;
-            DataScope = dataScope;
-
-            InitializeForm();
+            cqaRuleEditWindow.InitializeForm();
         }
 
         private List<string> NonAllowedRuleKeys()
@@ -143,33 +136,33 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Windows
 
         private void InitializeForm()
         {
-            _keyStringFormGroup = StringFormGroup.Build(
+            _keyStringFormGroup = new StringFormGroup(
                 "*Key:",
                 "Specify a unique key for the rule.",
                 OldRule?.key,
                 NonAllowedRuleDescriptions
             );
 
-            _descriptionStringFormGroup = StringFormGroup.Build(
+            _descriptionStringFormGroup = new StringFormGroup(
                 "*Description:",
                 "The description is used in the rule selection and in the report.",
                 OldRule?.description,
                 NonAllowedRuleKeys
             );
 
-            _groupDropdownFormGroup = DropdownFormGroup.Build(
+            _groupDropdownFormGroup = new DropdownFormGroup(
                 "Group:",
                 "Select to which group this rule should belong.",
                 RuleDao.Instance.GetAvailableGroups(),
                 OldGroup?.name
             );
 
-            _ruleTypeFormGroup = EnumFormGroup<RuleType>.Build(
+            _ruleTypeFormGroup = new EnumFormGroup<RuleType>(
                 "Type:",
                 "Select if this rule is a constraint or a concept."
             );
 
-            _cypherQueryTextAreaFormGroup = TextAreaFormGroup.Build(
+            _cypherQueryTextAreaFormGroup = new TextAreaFormGroup(
                 "*Cypher Query:",
                 "Enter the Cypher query for your rule.",
                 OldRule?.cypherQuery

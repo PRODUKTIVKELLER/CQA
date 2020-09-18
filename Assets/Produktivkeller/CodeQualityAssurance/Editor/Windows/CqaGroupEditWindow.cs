@@ -58,9 +58,9 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Windows
             {
                 Delete();
             }
-            
+
             GUILayout.EndHorizontal();
-            
+
             if (CqaButton.SmallButton("Abort"))
             {
                 Close();
@@ -75,7 +75,8 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Windows
 
         private void UpdateKeyFromNameIfUserDidNotSetIt()
         {
-            if (_nameStringFormGroup.Value != null && (!_keyStringFormGroup.Touched || _keyStringFormGroup.Value.Length == 0))
+            if (_nameStringFormGroup.Value != null &&
+                (!_keyStringFormGroup.Touched || _keyStringFormGroup.Value.Length == 0))
             {
                 Regex rgx = new Regex("[^a-zA-Z0-9 -]");
                 string key = rgx.Replace(_nameStringFormGroup.Value.ToLower().Replace(" ", "-"), "");
@@ -145,7 +146,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Windows
         {
             if (_nameStringFormGroup == null)
             {
-                _nameStringFormGroup = StringFormGroup.Build(
+                _nameStringFormGroup = new StringFormGroup(
                     "*Name:",
                     "Specify a name for the group.",
                     OldGroup?.name,
@@ -155,7 +156,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Windows
 
             if (_keyStringFormGroup == null)
             {
-                _keyStringFormGroup = StringFormGroup.Build(
+                _keyStringFormGroup = new StringFormGroup(
                     "*Key:",
                     "Specify a unique key for the group.",
                     OldGroup?.key,
@@ -165,7 +166,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Windows
 
             if (_scopeEnumFormGroup == null)
             {
-                _scopeEnumFormGroup = EnumFormGroup<DataScope>.Build(
+                _scopeEnumFormGroup = new EnumFormGroup<DataScope>(
                     "Scope:",
                     "Select if this group should be available just for this or for all projects."
                 );

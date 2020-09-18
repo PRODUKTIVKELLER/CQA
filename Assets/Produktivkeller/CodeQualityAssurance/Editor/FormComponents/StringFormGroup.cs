@@ -7,12 +7,26 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.FormComponents
 {
     public class StringFormGroup
     {
-        private string _description;
+        private readonly string _description;
+        private readonly string _initialValue;
+        private readonly string _label;
+        private readonly Func<List<string>> _providePotentialClashes;
+        private string _value;
 
-        private string _initialValue;
-        private string _label;
-        private Func<List<string>> _providePotentialClashes;
-        private string _value = "";
+        public StringFormGroup(
+            string label,
+            string description,
+            string initialValue,
+            Func<List<string>> providePotentialClashes
+        )
+        {
+            _initialValue = initialValue;
+            _value = initialValue;
+            _label = label;
+            _description = description;
+            _providePotentialClashes = providePotentialClashes;
+        }
+
         public bool Touched { get; private set; }
 
         public string Value => _value?.Trim();
@@ -56,24 +70,6 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.FormComponents
             }
 
             return Value == _initialValue;
-        }
-
-        public static StringFormGroup Build(
-            string label,
-            string description,
-            string initialValue,
-            Func<List<string>> providePotentialClashes
-        )
-        {
-            StringFormGroup stringFormGroup = new StringFormGroup
-            {
-                _initialValue = initialValue,
-                _value = initialValue,
-                _label = label,
-                _description = description,
-                _providePotentialClashes = providePotentialClashes
-            };
-            return stringFormGroup;
         }
 
         public bool IsValid()
