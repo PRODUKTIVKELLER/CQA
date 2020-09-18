@@ -15,6 +15,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
         private readonly DataScope _dataScope;
         private Dictionary<Group, bool> _groupFoldout;
         private List<Group> _groupList;
+        private Vector2 _scroll;
 
         public RuleManager(DataScope dataScope)
         {
@@ -61,8 +62,10 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
 
             foreach (Group group in groupsSortedByDescription)
             {
+                _scroll = EditorGUILayout.BeginScrollView(_scroll);
                 CreateGroupCheckboxAndFoldout(group);
                 CreateRuleCheckboxesForGroup(group);
+                EditorGUILayout.EndScrollView();
             }
 
             GUILayout.Space(20);

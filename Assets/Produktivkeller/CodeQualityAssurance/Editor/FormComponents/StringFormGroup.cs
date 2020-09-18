@@ -21,7 +21,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.FormComponents
         {
             CqaLabel.FormLabel(_label);
             CqaLabel.FormDescription(_description);
-            string newValue = GUILayout.TextField(Value);
+            string newValue = GUILayout.TextField(_value);
 
             if (newValue != Value)
             {

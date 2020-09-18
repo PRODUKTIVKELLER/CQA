@@ -1,4 +1,5 @@
 ﻿using Produktivkeller.CodeQualityAssurance.Editor.UiComponents;
+using UnityEditor;
 using UnityEngine;
 
 namespace Produktivkeller.CodeQualityAssurance.Editor.FormComponents
@@ -8,6 +9,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.FormComponents
         private string _description;
 
         private string _label;
+        private Vector2 _scroll;
         private string _value = "";
         private bool Touched { get; set; }
         public string Value => _value?.Trim();
@@ -16,7 +18,10 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.FormComponents
         {
             CqaLabel.FormLabel(_label);
             CqaLabel.FormDescription(_description);
-            string newValue = GUILayout.TextArea(Value, GUILayout.MinHeight(100));
+            
+            _scroll = EditorGUILayout.BeginScrollView(_scroll);
+            string newValue = GUILayout.TextArea(_value);
+            EditorGUILayout.EndScrollView();
 
             if (newValue != Value)
             {
@@ -41,7 +46,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.FormComponents
         {
             TextAreaFormGroup stringFormGroup = new TextAreaFormGroup
             {
-                _value = initialValue ?? "",
+                _value = initialValue ?? "\n\n\n\n",
                 _label = label,
                 _description = description
             };

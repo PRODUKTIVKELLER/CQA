@@ -22,9 +22,8 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
             ShowGlobalRuleEditor();
             ShowLocalRuleEditor();
 
-            GUILayout.Space(20);
-
-            GUILayout.BeginHorizontal();
+            GUILayout.Space(10);
+            
             if (CqaButton.NormalButton("Create Group"))
             {
                 CqaGroupEditWindow.Open(DataScope.Local);
@@ -36,9 +35,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
                 CqaRuleEditWindow.Open(DataScope.Local);
             }
 
-            GUILayout.EndHorizontal();
-
-            GUILayout.Space(30);
+            GUILayout.Space(10);
         }
 
         private void ShowLocalRuleEditor()

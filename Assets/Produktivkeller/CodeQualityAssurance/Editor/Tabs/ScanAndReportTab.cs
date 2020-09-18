@@ -11,13 +11,11 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
     {
         private readonly HistoryManager _historyManager;
         private readonly JqaExecutor _jqaExecutor;
-        private readonly JqaManager _jqaManager;
         private readonly RuleSelector _ruleSelector;
 
-        public ScanAndReportTab(JqaManager jqaManager, JqaExecutor jqaExecutor, HistoryManager historyManager,
+        public ScanAndReportTab(JqaExecutor jqaExecutor, HistoryManager historyManager,
             RuleSelector ruleSelector)
         {
-            _jqaManager = jqaManager;
             _jqaExecutor = jqaExecutor;
             _historyManager = historyManager;
             _ruleSelector = ruleSelector;
@@ -91,8 +89,9 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
                 //     _jqaExecutor.StopProcess();
                 // }
             }
-
+            
             _ruleSelector.OnGUI();
+            
             ShowReportButtons();
         }
 
@@ -114,8 +113,9 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
             }
 
             EditorGUI.EndDisabledGroup();
-
             EditorGUI.EndDisabledGroup();
+            
+            GUILayout.Space(10);
         }
     }
 }

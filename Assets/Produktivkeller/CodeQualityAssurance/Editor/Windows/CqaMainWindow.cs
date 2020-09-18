@@ -69,8 +69,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Windows
             _historyManager = new HistoryManager();
             _ruleSelector = new RuleSelector();
             _jqaExecutor = new JqaExecutor(_historyManager, _ruleSelector);
-            _scanAndReportTab =
-                new ScanAndReportTab(_jqaManager, _jqaExecutor, _historyManager, _ruleSelector);
+            _scanAndReportTab = new ScanAndReportTab(_jqaExecutor, _historyManager, _ruleSelector);
             _installTab = new InstallTab(_jqaManager);
             _manageCustomRulesTab = new ManageCustomRulesTab();
             _navigationButtonStyle = NavigationButtonStyleProvider.Provide();

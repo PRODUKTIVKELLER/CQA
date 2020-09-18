@@ -65,6 +65,8 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Windows
             {
                 Close();
             }
+            
+            GUILayout.Space(10);
         }
 
         private void Delete()
@@ -110,8 +112,8 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Windows
             CqaRuleEditWindow cqaRuleEditWindow =
                 GetWindow<CqaRuleEditWindow>(true, title);
 
-            cqaRuleEditWindow.maxSize = new Vector2(500, 700);
-            cqaRuleEditWindow.minSize = new Vector2(300, 700);
+            // cqaRuleEditWindow. = new Vector2(500, 700);
+            cqaRuleEditWindow.minSize = new Vector2(500, 700);
 
             cqaRuleEditWindow.Init(dataScope, title, rule, group);
         }

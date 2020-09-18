@@ -11,6 +11,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
         private List<Group> _builtInGroupList;
 
         private Dictionary<Group, bool> _groupFoldout;
+        private Vector2 _scroll;
         public Dictionary<Group, bool> GroupCheckboxes;
         public Dictionary<Rule, bool> RuleCheckboxes;
 
@@ -43,15 +44,17 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.Tabs
 
         public void OnGUI()
         {
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Rules:", EditorStyles.boldLabel);
+            EditorGUILayout.Space();
+            
+            _scroll = EditorGUILayout.BeginScrollView(_scroll);
             ListRulesWithCheckboxes();
+            EditorGUILayout.EndScrollView();
         }
 
         private void ListRulesWithCheckboxes()
         {
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Rules:", EditorStyles.boldLabel);
-            EditorGUILayout.Space();
-
             foreach (Group group in _builtInGroupList)
             {
                 CreateGroupCheckboxAndFoldout(group);
