@@ -12,10 +12,10 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
         private const string JqaDownloadUrl =
             "https://jqassistant.org/wp-content/uploads/2020/01/jqassistant-commandline-neo4jv3-1.8.0-distribution.zip";
 
-        private const string JqaCsharpPluginFileName = "jqa-csharp-plugin-0.1.1.jar";
+        private const string JqaCsharpPluginFileName = "jqa-csharp-plugin-0.1.2.jar";
 
         private const string JqaCsharpPluginDownloadUrl =
-            "https://github.com/softvis-research/jqa-csharp-plugin/releases/download/v0.1.1-alpha/" +
+            "https://github.com/softvis-research/jqa-csharp-plugin/releases/download/v0.1.2-alpha/" +
             JqaCsharpPluginFileName;
 
         private static readonly ILog Log =

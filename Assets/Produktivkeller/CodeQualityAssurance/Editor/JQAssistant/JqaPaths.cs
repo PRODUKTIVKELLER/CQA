@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
@@ -9,7 +10,7 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
     {
         private const string CompanyFolderName = "produktivkeller";
         private const string ApplicationFolderName = "unity-code-quality-assurance";
-        private const string VersionFolderName = "0.0.1";
+        private const string VersionFolderName = "0.2";
         private static JqaPaths _instance;
 
         private readonly string _cqaFolderInAssets;
@@ -53,7 +54,10 @@ namespace Produktivkeller.CodeQualityAssurance.Editor.JqAssistant
 
         private string BuildJqaDataPath()
         {
-            return Path.Combine(BuildAppDataPath(), "data", Application.productName);
+            Regex rgx = new Regex("[^a-zA-Z0-9 -]");
+            string productFolderName = rgx.Replace(Application.productName.ToLower().Replace(" ", "-"), "");
+
+            return Path.Combine(BuildAppDataPath(), "data", productFolderName);
         }
 
         public string BuildJqaStorePath()
